@@ -1,5 +1,9 @@
 "use strict";
 
+import g from "./script2.js";
+
+g();
+
 const d = new Date();
 console.log(d);
 let text = d.toLocaleString();
@@ -15,6 +19,8 @@ const postContent = document.querySelector("#post-content");
 const titleContent = document.querySelector("#title-content");
 const form = document.querySelector("#form");
 const postList = document.querySelector(".post-list");
+const btnDelete = document.querySelector(".delete-button");
+const btnEdit = document.querySelector(".edit-button");
 
 uploadPosts();
 
@@ -127,15 +133,19 @@ async function addPostToServer(e) {
 
     // postList.insertBefore(li, theFirstChild);
 
+    postList.innerHTML = "";
+    uploadPosts();
     closeModal();
   }
 }
 
 async function uploadPosts() {
   const response = await fetch(
-    "https://pocketbase.sksoldev.com/api/collections/blog/records"
+    "https://pocketbase.sksoldev.com/api/collections/blog/records?sort=-created"
   );
   const result = await response.json();
+
+  console.log(result);
 
   result.items.forEach((element) => {
     template(element);
@@ -144,6 +154,11 @@ async function uploadPosts() {
 
 function template(item) {
   const data = new Date(item.created);
+
+  function del(item) {
+    return () => deletePost(item);
+  }
+
   const currentTime = data.toLocaleDateString("ru", {
     day: "2-digit",
     month: "2-digit",
@@ -162,12 +177,12 @@ function template(item) {
             <h2 class="text-2xl">${item.title}</h2>
             <div class="flex items-center space-x-3">
               <button
-                class="px-7 py-2 bg-blue-400 rounded-2xl text-white hover:bg-blue-300 active:bg-blue-700 hover:shadow-lg hover:shadow-slate-500 transition-all duration-200 active:translate-y-0.5"
+                class="edit-button px-7 py-2 bg-blue-400 rounded-2xl text-white hover:bg-blue-300 active:bg-blue-700 hover:shadow-lg hover:shadow-slate-500 transition-all duration-200 active:translate-y-0.5"
               >
                 Edit
               </button>
-              <button
-                class="px-4 py-2 bg-blue-400 rounded-2xl text-white hover:bg-blue-300 active:bg-blue-700 hover:shadow-lg hover:shadow-slate-500 transition-all duration-200 active:translate-y-0.5"
+              <button onclick="del()"
+                class="delete-button px-4 py-2 bg-blue-400 rounded-2xl text-white hover:bg-blue-300 active:bg-blue-700 hover:shadow-lg hover:shadow-slate-500 transition-all duration-200 active:translate-y-0.5"
               >
                 Delete
               </button>
@@ -179,7 +194,7 @@ function template(item) {
           </div>
           
           <div class="flex justify-between items-center div-likes">
-            <button  class="relative " onclick="${() => editLikeNumber(item)}" >
+            <button  class="relative " onclick=" ${() => g()}" >
               <p class="ml-8">${item.likes}</p>
               <div
                 class="h-6 w-6 absolute top-0.5 -left-0 hover:scale-125 rounded-2xl hover:bg-pink-500 transition-all active:translate-y-1 hover:shadow-lg hover:shadow-slate-500 duration-300"
@@ -192,9 +207,11 @@ function template(item) {
             <div>${currentTime}</div>
           </div>`;
 
-  const theFirstChild = postList.firstChild;
+  // const theFirstChild = postList.firstChild;
 
-  postList.insertBefore(li, theFirstChild);
+  // postList.insertBefore(li, theFirstChild);
+
+  postList.appendChild(li);
 }
 
 async function editLikeNumber(object) {
@@ -213,6 +230,8 @@ async function editLikeNumber(object) {
       },
     }
   );
+
+  console.log("------");
 }
 
 // async function editLikeNumber(e) {
@@ -240,3 +259,13 @@ async function editLikeNumber(object) {
 
 //   li.innerHTML = ``;
 // }
+
+async function deletePost(id) {
+  console.log("______");
+  await fetch(
+    `https://pocketbase.sksoldev.com/api/collections/blog/records/${id}`,
+    {
+      method: "DELETE",
+    }
+  );
+}
