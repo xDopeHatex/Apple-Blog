@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="../dist/output.css" rel="stylesheet" />
+    <script src="../JS/script.js" defer></script>
+  </head>
+  <body>
+    <!-- Wrapper -->
+    <div class="w-5/6 m-auto my-5 max-w-4xl">
+      <section class="flex flex-col space-y-8">
+        <div class="overlay hidden"></div>
+        <header
+          class="flex justify-between items-center bg-slate-100 p-6 rounded-lg"
+        >
+          <div class="flex items-center space-x-4 relative justify-center">
+            <h1 class="pl-10 text-3xl font-semibold">Apple Blog</h1>
+            <div class="h-8 w-8 absolute -top-[0.3rem] -left-5">
+              <img src="../img/logo.png" alt="" />
+            </div>
+          </div>
+          <button
+            class="add-post bg-pink-500 px-6 py-3 text-white rounded-2xl hover:bg-pink-400 active:bg-pink-700 hover:shadow-lg hover:shadow-slate-500 transition-all duration-200 active:translate-y-0.5"
+          >
+            Add Post
+          </button>
+        </header>
+        <ul class="post-list flex flex-col space-y-2 justify-center relative">
+          <form
+            id="form"
+            class="modal-window absolute scale-0 bg-slate-200 flex-col p-6 space-y-5 rounded-lg z-10 w-full top-0 transition-all duration-300"
+          >
+            <div class="flex justify-between items-center">
+              <p class="text-2xl">Add post</p>
+              <button type="button" class="h-9 w-9 group button-close">
+                <img
+                  class="group-hover:bg-pink-300 p-2 rounded-full active:translate-y-0.5 group-hover:shadow-lg group-hover:shadow-slate-700 transition-all duration-200"
+                  src="../img/cross.png"
+                  alt=""
+                />
+              </button>
+            </div>
+            <div>
+              <textarea
+                id="title-content"
+                placeholder="Here goes title of your post..."
+                class="bg-slate-100 rounded-lg py-4 px-3 w-full"
+              ></textarea>
+            </div>
+            <div>
+              <textarea
+                id="post-content"
+                placeholder="Here goes your post..."
+                class="bg-slate-100 rounded-lg py-4 px-3 w-full min-h-[10rem]"
+              ></textarea>
+            </div>
+            <div class="flex justify-between items-center">
+              <div></div>
+              <button
+                id="upload-post"
+                type="submit"
+                class="bg-pink-500 px-[4.5rem] py-3 text-white rounded-2xl hover:bg-pink-400 active:bg-pink-700 hover:shadow-lg hover:shadow-slate-500 transition-all duration-200 active:translate-y-0.5"
+              >
+                Add
+              </button>
+            </div>
+          </form>
+        </ul>
+      </section>
+    </div>
+  </body>
+</html>
