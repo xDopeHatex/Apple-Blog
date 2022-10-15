@@ -13,6 +13,11 @@
   transform: translateY(0);
 }
 
+/* .modal-window-edit.active {
+  transform: scale(1);
+  transform: translateY(0);
+} */
+
 .overlay {
   position: absolute;
   top: 0;
