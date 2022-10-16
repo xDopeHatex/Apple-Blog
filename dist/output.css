@@ -571,6 +571,18 @@ video {
   top: 0px;
 }
 
+.left-0 {
+  left: 0px;
+}
+
+.right-0 {
+  right: 0px;
+}
+
+.bottom-0 {
+  bottom: 0px;
+}
+
 .top-0\.5 {
   top: 0.125rem;
 }
@@ -594,6 +606,14 @@ video {
 
 .ml-8 {
   margin-left: 2rem;
+}
+
+.block {
+  display: block;
+}
+
+.inline {
+  display: inline;
 }
 
 .flex {
@@ -794,6 +814,10 @@ video {
   font-weight: 600;
 }
 
+.font-bold {
+  font-weight: 700;
+}
+
 .text-white {
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity));
@@ -829,18 +853,20 @@ video {
   transform: translateY(0);
 }
 
-/* .modal-window-edit.active {
+.delete-modal-window.active {
   transform: scale(1);
   transform: translateY(0);
-} */
+}
 
 .overlay {
   position: absolute;
   top: 0;
   left: 0;
+  right: 0;
+  bottom: 0;
   width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.1);
+  height: 200vh;
+  background-color: rgba(0, 0, 0, 0.2);
   -webkit-backdrop-filter: blur(1px);
           backdrop-filter: blur(1px);
   z-index: 5;

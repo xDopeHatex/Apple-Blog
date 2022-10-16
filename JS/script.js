@@ -28,6 +28,13 @@ const editUploadPost = document.querySelector(".edit-upload-post");
 const editPostContent = document.querySelector(".edit-post-content");
 const editTitleContent = document.querySelector(".edit-title-content");
 
+//Delete Handlers
+
+const deleteModalWindow = document.querySelector(".delete-modal-window");
+const deleteBtnClose = document.querySelector(".delete-button-close");
+const deletePostBtn = document.querySelector(".delete-post-btn");
+const deleteForm = document.querySelector("#delete-form");
+
 uploadPosts();
 
 //Add Modal Window
@@ -55,6 +62,19 @@ document.addEventListener("keydown", function (e) {
     closeEditModal();
   }
 });
+
+const closeDeleteModal = function () {
+  deleteModalWindow.classList.remove("active");
+  overlay.classList.add("hidden");
+};
+
+document.addEventListener("keydown", function (e) {
+  if (e.key === "Escape" && deleteModalWindow.classList.contains("active")) {
+    closeDeleteModal();
+  }
+});
+
+//Delete modal window
 
 //Edit Modal Window
 
@@ -94,13 +114,6 @@ async function addPostToServer(e) {
     addTitleContent.value = "";
 
     addPostContent.value = "";
-
-    console.log(response);
-    let rawAddPost = await response.json();
-    console.log(rawAddPost.body);
-    // Create li element
-
-    template(rawAddPost);
 
     // const data = new Date(rawAddPost.created);
     // const currentTime = data.toLocaleDateString("ru", {
@@ -174,10 +187,21 @@ async function uploadPosts() {
     template(element);
   });
 
-  const btnDelete = document
-    .querySelectorAll(".delete-button")
-    .forEach((el) => el.addEventListener("click", deletePost));
+  document.querySelectorAll(".delete-button").forEach((el) =>
+    el.addEventListener("click", () => {
+      deleteModalWindow.classList.toggle("active");
+      overlay.classList.toggle("hidden");
+      deleteForm.dataset.id = `${el.dataset.id}`;
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    })
+  );
 
+  const closeDeleteModal = function () {
+    deleteModalWindow.classList.remove("active");
+    overlay.classList.add("hidden");
+  };
+
+  deleteBtnClose.addEventListener("click", closeDeleteModal);
   // const btnEdit = document
   //   .querySelectorAll(".edit-button")
   //   .forEach((el) => el.addEventListener("click", editPostToServer));
@@ -236,8 +260,8 @@ function template(item) {
               >
                 Edit
               </button>
-              <button 
-                class="delete-button px-4 py-2 bg-blue-400 rounded-2xl text-white hover:bg-blue-300 active:bg-blue-700 hover:shadow-lg hover:shadow-slate-500 transition-all duration-200 active:translate-y-0.5"
+              <button data-id="${item.id}" 
+                class="delete-button   px-4 py-2 bg-blue-400 rounded-2xl text-white hover:bg-blue-300 active:bg-blue-700 hover:shadow-lg hover:shadow-slate-500 transition-all duration-200 active:translate-y-0.5"
               >
                 Delete
               </button>
@@ -335,15 +359,16 @@ async function editPostToServer(e) {
   });
 }
 
-async function deletePost(e) {
-  const parentDiv = e.target.closest(".post");
+deletePostBtn.addEventListener("click", deletePost);
 
+async function deletePost(e) {
   await fetch(
-    `https://pocketbase.sksoldev.com/api/collections/blog/records/${parentDiv.id}`,
+    `https://pocketbase.sksoldev.com/api/collections/blog/records/${deleteForm.dataset.id}`,
     {
       method: "DELETE",
     }
   );
   postList.innerHTML = "";
   uploadPosts();
+  closeDeleteModal();
 }

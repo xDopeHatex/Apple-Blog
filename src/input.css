@@ -18,10 +18,10 @@
   transform: translateY(0);
 }
 
-/* .modal-window-edit.active {
+.delete-modal-window.active {
   transform: scale(1);
   transform: translateY(0);
-} */
+}
 
 .overlay {
   position: absolute;

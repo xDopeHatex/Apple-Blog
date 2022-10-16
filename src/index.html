@@ -8,8 +8,8 @@
   <body>
     <div class="overlay hidden"></div>
     <!-- Wrapper -->
-    <div class="w-5/6 m-auto my-5 max-w-4xl relative">
-      <section class="flex flex-col space-y-8">
+    <div class="w-5/6 m-auto my-5 max-w-4xl">
+      <section class="flex flex-col space-y-8 relative">
         <header
           class="flex justify-between items-center bg-slate-100 p-6 rounded-lg"
         >
@@ -25,9 +25,10 @@
             Add Post
           </button>
         </header>
+
         <form
           id="add-form"
-          class="add-modal-window absolute scale-0 bg-slate-200 flex-col p-6 space-y-5 rounded-lg z-10 w-full top-0 transition-all duration-300"
+          class="add-modal-window absolute scale-0 bg-slate-200 flex-col p-6 space-y-5 rounded-lg z-10 w-full top-0 left-0 transition-all duration-300"
         >
           <div class="flex justify-between items-center">
             <p class="text-2xl">Add post</p>
@@ -98,9 +99,74 @@
             </button>
           </div>
         </form>
-        <ul
-          class="post-list flex flex-col space-y-2 justify-center relative"
-        ></ul>
+        <div
+          data-id=""
+          id="delete-form"
+          class="delete-modal-window absolute scale-0 bg-slate-200 flex-col p-6 space-y-5 rounded-lg z-10 w-full top-0 left-0 transition-all duration-300"
+        >
+          <div class="flex justify-between items-center">
+            <p class="text-2xl">Delete post</p>
+            <button type="button" class="h-9 w-9 group delete-button-close">
+              <img
+                class="group-hover:bg-pink-300 p-2 rounded-full active:translate-y-0.5 group-hover:shadow-lg group-hover:shadow-slate-700 transition-all duration-200"
+                src="../img/cross.png"
+                alt=""
+              />
+            </button>
+          </div>
+          <div>
+            Do you really want to delete
+            <span id="span" class="font-bold"></span> post?
+          </div>
+          <div class="flex justify-between items-center">
+            <div></div>
+            <button
+              type="click"
+              class="delete-post-btn bg-pink-500 px-[4.5rem] py-3 text-white rounded-2xl hover:bg-pink-400 active:bg-pink-700 hover:shadow-lg hover:shadow-slate-500 transition-all duration-200 active:translate-y-0.5"
+            >
+              Delete
+            </button>
+          </div>
+        </div>
+        <ul class="post-list flex flex-col space-y-2 justify-center relative">
+          <li
+            class="post flex-col justify-between p-6 bg-slate-100 space-y-8 rounded-lg hidden"
+          >
+            <div class="flex justify-between items-center">
+              <h2 class="title text-2xl">${item.title}</h2>
+              <div class="flex items-center space-x-3">
+                <button
+                  data-id="${item.id}"
+                  data-title="${item.title}"
+                  data-body="${item.body}"
+                  data-likes="${item.likes}"
+                  class="edit-button px-7 py-2 bg-blue-400 rounded-2xl text-white hover:bg-blue-300 active:bg-blue-700 hover:shadow-lg hover:shadow-slate-500 transition-all duration-200 active:translate-y-0.5"
+                >
+                  Edit
+                </button>
+                <button
+                  class="delete-button px-4 py-2 bg-blue-400 rounded-2xl text-white hover:bg-blue-300 active:bg-blue-700 hover:shadow-lg hover:shadow-slate-500 transition-all duration-200 active:translate-y-0.5"
+                >
+                  Delete
+                </button>
+              </div>
+            </div>
+
+            <div class="body">${item.body}</div>
+
+            <div class="flex justify-between items-center div-likes">
+              <button class="relative like-button">
+                <p class="likes ml-8">${item.likes}</p>
+                <div
+                  class="h-6 w-6 absolute top-0.5 -left-0 hover:scale-125 rounded-2xl hover:bg-pink-500 transition-all active:translate-y-1 hover:shadow-lg hover:shadow-slate-500 duration-300"
+                >
+                  <img src="../img/like.svg" style="fill: white" alt="" />
+                </div>
+              </button>
+              <div>${currentTime}</div>
+            </div>
+          </li>
+        </ul>
       </section>
     </div>
     <script type="module" src="../JS/script.js"></script>
