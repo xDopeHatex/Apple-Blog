@@ -10,44 +10,69 @@ let text = d.toLocaleString();
 
 console.log(text);
 
-const modalWindow = document.querySelector(".modal-window");
-const btnClose = document.querySelector(".button-close");
-const uploadPost = document.querySelector("#upload-post");
+const addModalWindow = document.querySelector(".add-modal-window");
+const addBtnClose = document.querySelector(".add-button-close");
+const addUploadPost = document.querySelector(".add-upload-post");
 const addPost = document.querySelector(".add-post");
 const overlay = document.querySelector(".overlay");
-const postContent = document.querySelector("#post-content");
-const titleContent = document.querySelector("#title-content");
+const addPostContent = document.querySelector(".add-post-content");
+const addTitleContent = document.querySelector(".add-title-content");
 const addForm = document.querySelector("#add-form");
+const editForm = document.querySelector("#edit-form");
 const postList = document.querySelector(".post-list");
+const editBtnClose = document.querySelector(".edit-button-close");
+// const editForm = document.querySelector("#edit-form");
+const editModalWindow = document.querySelector(".edit-modal-window");
+const editUploadPost = document.querySelector(".edit-upload-post");
+
+const editPostContent = document.querySelector(".edit-post-content");
+const editTitleContent = document.querySelector(".edit-title-content");
 
 uploadPosts();
 
-const closeModal = function () {
-  modalWindow.classList.remove("active");
+//Add Modal Window
+
+const closeAddModal = function () {
+  addModalWindow.classList.remove("active");
   overlay.classList.add("hidden");
 };
 
 addPost.addEventListener("click", () => {
-  modalWindow.classList.toggle("active");
+  addModalWindow.classList.toggle("active");
   overlay.classList.toggle("hidden");
 });
 
-btnClose.addEventListener("click", closeModal);
+addBtnClose.addEventListener("click", closeAddModal);
 
-overlay.addEventListener("click", closeModal);
+overlay.addEventListener("click", closeAddModal);
 
 document.addEventListener("keydown", function (e) {
-  if (e.key === "Escape" && modalWindow.classList.contains("active")) {
-    closeModal();
+  if (
+    (e.key === "Escape" && addModalWindow.classList.contains("active")) ||
+    (e.key === "Escape" && editModalWindow.classList.contains("active"))
+  ) {
+    closeAddModal();
+    closeEditModal();
   }
 });
+
+//Edit Modal Window
+
+const closeEditModal = function () {
+  editModalWindow.classList.remove("active");
+  overlay.classList.add("hidden");
+};
+
+editBtnClose.addEventListener("click", closeEditModal);
+
+overlay.addEventListener("click", closeEditModal);
 
 addForm.addEventListener("submit", addPostToServer);
 
 async function addPostToServer(e) {
-  if (postContent.value === "") {
+  if (addPostContent.value === "") {
     alert("It seems that you forgot to add a post, bro");
-  } else if (titleContent.value === "") {
+  } else if (addTitleContent.value === "") {
     alert("It seems that you forgot to add a title, bro");
   } else {
     e.preventDefault();
@@ -56,9 +81,9 @@ async function addPostToServer(e) {
       {
         method: "POST",
         body: JSON.stringify({
-          body: postContent.value,
+          body: addPostContent.value,
 
-          title: titleContent.value,
+          title: addTitleContent.value,
         }),
         headers: {
           "Content-type": "application/json; charset=UTF-8",
@@ -66,9 +91,9 @@ async function addPostToServer(e) {
       }
     );
 
-    titleContent.value = "";
+    addTitleContent.value = "";
 
-    postContent.value = "";
+    addPostContent.value = "";
 
     console.log(response);
     let rawAddPost = await response.json();
@@ -133,7 +158,7 @@ async function addPostToServer(e) {
 
     postList.innerHTML = "";
     uploadPosts();
-    closeModal();
+    closeAddModal();
   }
 }
 
@@ -153,24 +178,37 @@ async function uploadPosts() {
     .querySelectorAll(".delete-button")
     .forEach((el) => el.addEventListener("click", deletePost));
 
-  const btnEdit = document
-    .querySelectorAll(".edit-button")
-    .forEach((el) => el.addEventListener("click", editPost));
+  // const btnEdit = document
+  //   .querySelectorAll(".edit-button")
+  //   .forEach((el) => el.addEventListener("click", editPostToServer));
 
   const btnLike = document
     .querySelectorAll(".like-button")
     .forEach((el) => el.addEventListener("click", likePost));
 
+  const editPost = document.querySelectorAll(".edit-button");
+
+  editPost.forEach((el) =>
+    el.addEventListener("click", () => {
+      console.log(el.dataset.id);
+      console.log(el.dataset.title);
+      console.log(el.dataset.body);
+      console.log(el.dataset.likes);
+      editForm.dataset.id = `${el.dataset.id}`;
+
+      editTitleContent.value = el.dataset.title;
+      editPostContent.value = el.dataset.body;
+
+      editModalWindow.classList.toggle("active");
+      overlay.classList.toggle("hidden");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    })
+  );
+
+  editForm.addEventListener("submit", editPostToServer);
+
   // btnDelete.addEventListener("click", deletePost);
   // btnEdit.addEventListener("click", editPost);
-
-  window.addEventListener("DOMContentLoaded", (event) => {
-    [...document.querySelectorAll("a[href^='example.com']")].forEach((el) =>
-      el.addEventListener("click", function (e) {
-        newrelic.addPageAction("Doc");
-      })
-    );
-  });
 }
 
 function template(item) {
@@ -193,7 +231,7 @@ function template(item) {
   li.innerHTML = `<div class="flex justify-between items-center ">
             <h2 class="title text-2xl">${item.title}</h2>
             <div class="flex items-center  space-x-3" >
-              <button 
+              <button data-id="${item.id}" data-title="${item.title}" data-body="${item.body}" data-likes="${item.likes}"      
                 class="edit-button px-7 py-2 bg-blue-400 rounded-2xl text-white hover:bg-blue-300 active:bg-blue-700 hover:shadow-lg hover:shadow-slate-500 transition-all duration-200 active:translate-y-0.5"
               >
                 Edit
@@ -228,8 +266,8 @@ function template(item) {
 async function likePost(e) {
   const parentDiv = e.target.closest(".post");
   const likes = parentDiv.querySelector(".likes").textContent;
-  const body = parentDiv.querySelector(".body").textContent;
-  const title = parentDiv.querySelector(".title").textContent;
+  const body = parentDiv.querySelector(".body").value;
+  const title = parentDiv.querySelector(".title").value;
 
   let totalLikes = Number(likes) + 1;
 
@@ -251,23 +289,33 @@ async function likePost(e) {
     }
   );
   postList.innerHTML = "";
-  uploadPosts();
+  await uploadPosts();
+  document.getElementById(`${parentDiv.id}`).scrollIntoView({
+    behavior: "auto",
+    block: "center",
+    inline: "center",
+    behavior: "smooth",
+  });
 }
 
-// editForm.addEventListener("submit", editPost);
+async function editPostToServer(e) {
+  e.preventDefault();
+  const parentDiv = e.target.closest("#edit-form");
 
-async function editPost(e) {
-  const parentDiv = e.target.closest(".post");
-  const likes = parentDiv.querySelector(".likes").textContent;
-  const body = parentDiv.querySelector(".body").textContent;
-  const title = parentDiv.querySelector(".title").textContent;
+  console.log(parentDiv);
 
-  const response = await fetch(
-    `https://pocketbase.sksoldev.com/api/collections/blog/records/${parentDiv.id}`,
+  const title = parentDiv.querySelector(".edit-title-content").value;
+  const body = parentDiv.querySelector(".edit-post-content").value;
+  const id = `${editForm.dataset.id}`;
+  console.log(id);
+  console.log(body);
+  console.log(title);
+
+  await fetch(
+    `https://pocketbase.sksoldev.com/api/collections/blog/records/${id}`,
     {
       method: "PATCH",
       body: JSON.stringify({
-        likes: likes,
         body: body,
         title: title,
       }),
@@ -276,17 +324,15 @@ async function editPost(e) {
       },
     }
   );
-  const post = await response.json();
-
-  console.log(post);
-
-  currentTask.body = post.body;
-
-  let li = document.getElementById(`${id}`);
-
-  li.innerHTML = "";
-
-  li.innerHTML = ``;
+  postList.innerHTML = "";
+  await uploadPosts();
+  closeEditModal();
+  document.getElementById(`${id}`).scrollIntoView({
+    behavior: "auto",
+    block: "center",
+    inline: "center",
+    behavior: "smooth",
+  });
 }
 
 async function deletePost(e) {
