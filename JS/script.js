@@ -139,7 +139,12 @@ async function uploadPosts() {
     el.addEventListener("click", () => {
       deleteModalWindow.classList.toggle("active");
       overlay.classList.toggle("hidden");
+      const span = deleteForm.querySelector("#span");
+      console.log(span.textContent);
+      console.log(`${el.dataset.title}`);
       deleteForm.dataset.id = `${el.dataset.id}`;
+      span.textContent = `${el.dataset.title}`;
+
       window.scrollTo({ top: 0, behavior: "smooth" });
     })
   );
@@ -173,9 +178,22 @@ async function uploadPosts() {
 
       editModalWindow.classList.toggle("active");
       overlay.classList.toggle("hidden");
-      window.scrollTo({ top: 0, behavior: "smooth" });
     })
   );
+
+  const rawLi = result.items;
+
+  console.log(rawLi);
+
+  const finalLi = rawLi.length;
+
+  console.log(finalLi);
+
+  const size = 12 + 22 * finalLi;
+
+  console.log(size);
+
+  document.getElementById("overlay").style.height = `${size}vh`;
 
   editForm.addEventListener("submit", editPostToServer);
 
@@ -208,7 +226,7 @@ function template(item) {
               >
                 Edit
               </button>
-              <button data-id="${item.id}" 
+              <button data-id="${item.id}"  data-title="${item.title}" 
                 class="delete-button   px-4 py-2 bg-blue-400 rounded-2xl text-white hover:bg-blue-300 active:bg-blue-700 hover:shadow-lg hover:shadow-slate-500 transition-all duration-200 active:translate-y-0.5"
               >
                 Delete
@@ -237,37 +255,32 @@ function template(item) {
 
 async function likePost(e) {
   const parentDiv = e.target.closest(".post");
-  const likes = parentDiv.querySelector(".likes").textContent;
-  const body = parentDiv.querySelector(".body").value;
-  const title = parentDiv.querySelector(".title").value;
+  let likes = parentDiv.querySelector(".likes").textContent;
 
-  let totalLikes = Number(likes) + 1;
+  const totalLikes = Number(likes) + 1;
+  let resultLikes = "";
 
-  console.log(body);
+  try {
+    resultLikes = await fetch(
+      `https://pocketbase.sksoldev.com/api/collections/blog/records/${parentDiv.id}`,
+      {
+        method: "PATCH",
+        body: JSON.stringify({
+          likes: totalLikes,
+        }),
 
-  await fetch(
-    `https://pocketbase.sksoldev.com/api/collections/blog/records/${parentDiv.id}`,
-    {
-      method: "PATCH",
-      body: JSON.stringify({
-        likes: totalLikes,
-        body: body,
-        title: title,
-      }),
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+        },
+      }
+    );
+  } catch (error) {
+    alert(error);
+  }
 
-      headers: {
-        "Content-type": "application/json; charset=UTF-8",
-      },
-    }
-  );
-  postList.innerHTML = "";
-  await uploadPosts();
-  document.getElementById(`${parentDiv.id}`).scrollIntoView({
-    behavior: "auto",
-    block: "center",
-    inline: "center",
-    behavior: "smooth",
-  });
+  const finalLikes = await resultLikes.json();
+
+  parentDiv.querySelector(".likes").textContent = finalLikes.likes;
 }
 
 async function editPostToServer(e) {
@@ -276,35 +289,55 @@ async function editPostToServer(e) {
 
   console.log(parentDiv);
 
-  const title = parentDiv.querySelector(".edit-title-content").value;
-  const body = parentDiv.querySelector(".edit-post-content").value;
+  const beforeServerTitle = parentDiv.querySelector(
+    ".edit-title-content"
+  ).value;
+  const beforeServerBody = parentDiv.querySelector(".edit-post-content").value;
   const id = `${editForm.dataset.id}`;
-  console.log(id);
-  console.log(body);
-  console.log(title);
 
-  await fetch(
-    `https://pocketbase.sksoldev.com/api/collections/blog/records/${id}`,
-    {
-      method: "PATCH",
-      body: JSON.stringify({
-        body: body,
-        title: title,
-      }),
-      headers: {
-        "Content-type": "application/json; charset=UTF-8",
-      },
-    }
-  );
-  postList.innerHTML = "";
-  await uploadPosts();
+  let rawPostResult = "";
+
+  try {
+    rawPostResult = await fetch(
+      `https://pocketbase.sksoldev.com/api/collections/blog/records/${id}`,
+      {
+        method: "PATCH",
+        body: JSON.stringify({
+          body: beforeServerBody,
+          title: beforeServerTitle,
+        }),
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+        },
+      }
+    );
+  } catch (error) {
+    alert(error);
+  }
+
+  const postResult = await rawPostResult.json();
+  const afterServerTitle = postResult.title;
+  const afterServerBody = postResult.body;
+
+  console.log(afterServerBody);
+  console.log(afterServerTitle);
+
+  const currentPost = postList.querySelector(`#${id}`);
+
+  currentPost.querySelector(".title").textContent = afterServerTitle;
+  currentPost.querySelector(".body").textContent = afterServerBody;
+
+  console.log(currentPost);
+
+  // postList.innerHTML = "";
+  // await uploadPosts();
   closeEditModal();
-  document.getElementById(`${id}`).scrollIntoView({
-    behavior: "auto",
-    block: "center",
-    inline: "center",
-    behavior: "smooth",
-  });
+  // document.getElementById(`${id}`).scrollIntoView({
+  //   behavior: "auto",
+  //   block: "center",
+  //   inline: "center",
+  //   behavior: "smooth",
+  // });
 }
 
 deletePostBtn.addEventListener("click", deletePost);

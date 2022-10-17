@@ -6,10 +6,12 @@
     <link href="../dist/output.css" rel="stylesheet" />
   </head>
   <body>
-    <div class="overlay hidden"></div>
+    <div id="overlay" class="overlay hidden"></div>
     <!-- Wrapper -->
     <div class="w-5/6 m-auto my-5 max-w-4xl">
+      <!-- Main Container -->
       <section class="flex flex-col space-y-8 relative">
+        <!-- Logo, Name and AddPost Btn -->
         <header
           class="flex justify-between items-center bg-slate-100 p-6 rounded-lg"
         >
@@ -25,10 +27,10 @@
             Add Post
           </button>
         </header>
-
+        <!-- Add Post Modal Window -->
         <form
           id="add-form"
-          class="add-modal-window absolute scale-0 bg-slate-200 flex-col p-6 space-y-5 rounded-lg z-10 w-full top-0 left-0 transition-all duration-300"
+          class="add-modal-window absolute scale-0 bg-slate-200 flex-col p-6 space-y-5 rounded-lg z-10 w-full top-[10rem] left-0 right-0 transition-all duration-300"
         >
           <div class="flex justify-between items-center">
             <p class="text-2xl">Add post</p>
@@ -62,10 +64,11 @@
             </button>
           </div>
         </form>
+        <!-- Edit Modal Window -->
         <form
           id="edit-form"
           data-id=""
-          class="edit-modal-window absolute scale-0 bg-slate-200 flex-col p-6 space-y-5 rounded-lg z-10 w-full top-0 transition-all duration-300"
+          class="edit-modal-window hidden sticky top-[20rem] bg-slate-200 flex-col p-6 space-y-5 rounded-lg z-10 w-full transition-all duration-300"
         >
           <div class="flex justify-between items-center">
             <p class="text-2xl">Edit post</p>
@@ -99,10 +102,11 @@
             </button>
           </div>
         </form>
+        <!-- Delete Modal Window -->
         <div
           data-id=""
           id="delete-form"
-          class="delete-modal-window absolute scale-0 bg-slate-200 flex-col p-6 space-y-5 rounded-lg z-10 w-full top-0 left-0 transition-all duration-300"
+          class="delete-modal-window absolute scale-0 bg-slate-200 flex-col p-6 space-y-5 rounded-lg z-10 w-full transition-all duration-300"
         >
           <div class="flex justify-between items-center">
             <p class="text-2xl">Delete post</p>
@@ -128,7 +132,9 @@
             </button>
           </div>
         </div>
+        <!-- Container for posts -->
         <ul class="post-list flex flex-col space-y-2 justify-center relative">
+          <!-- Posts -->
           <li
             class="post flex-col justify-between p-6 bg-slate-100 space-y-8 rounded-lg hidden"
           >
