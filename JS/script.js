@@ -19,7 +19,7 @@ const addPostContent = document.querySelector(".add-post-content");
 const addTitleContent = document.querySelector(".add-title-content");
 const addForm = document.querySelector("#add-form");
 const editForm = document.querySelector("#edit-form");
-const postList = document.querySelector(".post-list");
+let postList = document.querySelector(".post-list");
 const editBtnClose = document.querySelector(".edit-button-close");
 // const editForm = document.querySelector("#edit-form");
 const editModalWindow = document.querySelector(".edit-modal-window");
@@ -124,71 +124,58 @@ async function addPostToServer(e) {
   }
 }
 
-async function uploadPosts() {
-  const response = await fetch(
-    "https://pocketbase.sksoldev.com/api/collections/blog/records?sort=-created"
-  );
-  const result = await response.json();
+// async function uploadPosts() {
+//   const response = await fetch(
+//     "https://pocketbase.sksoldev.com/api/collections/blog/records?sort=-created"
+//   );
+//   const result = await response.json();
 
-  console.log(result);
+//   console.log(result);
 
-  result.items.forEach((element) => {
-    template(element);
-  });
+//   result.items.forEach((element) => {
+//     template(element);
+//   });
 
-  document.querySelectorAll(".delete-button").forEach((el) =>
-    el.addEventListener("click", () => {
-      deleteModalWindow.classList.toggle("active");
-      overlay.classList.toggle("hidden");
-      const span = deleteForm.querySelector("#span");
-      console.log(span.textContent);
-      console.log(`${el.dataset.title}`);
-      deleteForm.dataset.id = `${el.dataset.id}`;
-      span.textContent = `${el.dataset.title}`;
-    })
-  );
+//   document.querySelectorAll(".delete-button").forEach((el) =>
+//     el.addEventListener("click", () => {
+//       deleteModalWindow.classList.toggle("active");
+//       overlay.classList.toggle("hidden");
+//       const span = deleteForm.querySelector("#span");
+//       console.log(span.textContent);
+//       console.log(`${el.dataset.title}`);
+//       deleteForm.dataset.id = `${el.dataset.id}`;
+//       span.textContent = `${el.dataset.title}`;
+//     })
+//   );
 
-  const btnLike = document
-    .querySelectorAll(".like-button")
-    .forEach((el) => el.addEventListener("click", likePost));
+//   const btnLike = document
+//     .querySelectorAll(".like-button")
+//     .forEach((el) => el.addEventListener("click", likePost));
 
-  const editPost = document.querySelectorAll(".edit-button");
+//   const editPost = document.querySelectorAll(".edit-button");
 
-  editPost.forEach((el) =>
-    el.addEventListener("click", () => {
-      console.log(el.dataset.id);
-      console.log(el.dataset.title);
-      console.log(el.dataset.body);
-      console.log(el.dataset.likes);
-      editForm.dataset.id = `${el.dataset.id}`;
+//   editPost.forEach((el) =>
+//     el.addEventListener("click", () => {
+//       console.log(el.dataset.id);
+//       console.log(el.dataset.title);
+//       console.log(el.dataset.body);
+//       console.log(el.dataset.likes);
+//       editForm.dataset.id = `${el.dataset.id}`;
 
-      editTitleContent.value = el.dataset.title;
-      editPostContent.value = el.dataset.body;
+//       editTitleContent.value = el.dataset.title;
+//       editPostContent.value = el.dataset.body;
 
-      editModalWindow.classList.toggle("active");
-      overlay.classList.toggle("hidden");
-    })
-  );
+//       editModalWindow.classList.toggle("active");
+//       overlay.classList.toggle("hidden");
+//     })
+//   );
 
-  const rawLi = result.items;
-
-  console.log(rawLi);
-
-  const finalLi = rawLi.length;
-
-  console.log(finalLi);
-
-  const size = 30 + 25 * finalLi;
-
-  console.log(size);
-
-  document.getElementById("overlay").style.height = `${size}vh`;
-
-  editForm.addEventListener("submit", editPostToServer);
-
-  // btnDelete.addEventListener("click", deletePost);
-  // btnEdit.addEventListener("click", editPost);
-}
+//   const rawLi = result.items;
+//   const finalLi = rawLi.length;
+//   const size = 30 + 23.5 * finalLi;
+//   document.getElementById("overlay").style.height = `${size}vh`;
+//   editForm.addEventListener("submit", editPostToServer);
+// }
 
 function template(item) {
   const data = new Date(item.created);
@@ -310,7 +297,7 @@ async function editPostToServer(e) {
 
   console.log(afterServerBody);
   console.log(afterServerTitle);
-
+  postList = document.querySelector(".post-list");
   const currentPost = postList.querySelector(`#${id}`);
 
   currentPost.querySelector(".title").textContent = afterServerTitle;
@@ -338,7 +325,147 @@ async function deletePost(e) {
       method: "DELETE",
     }
   );
-  postList.innerHTML = "";
-  uploadPosts();
+
+  postList.querySelector(`#${deleteForm.dataset.id}`).remove();
+
   closeDeleteModal();
+}
+
+async function downloadPageNumber(e) {
+  console.log(e.textContent);
+  const response = await fetch(
+    `https://pocketbase.sksoldev.com/api/collections/blog/records?page=${e.textContent}&sort=-created`
+  );
+  const result = await response.json();
+
+  console.log(result);
+
+  postList.innerHTML = "";
+
+  result.items.forEach((element) => {
+    template(element);
+  });
+
+  document.querySelectorAll(".delete-button").forEach((el) =>
+    el.addEventListener("click", () => {
+      deleteModalWindow.classList.toggle("active");
+      overlay.classList.toggle("hidden");
+      const span = deleteForm.querySelector("#span");
+      console.log(span.textContent);
+      console.log(`${el.dataset.title}`);
+      deleteForm.dataset.id = `${el.dataset.id}`;
+      span.textContent = `${el.dataset.title}`;
+    })
+  );
+
+  const btnLike = document
+    .querySelectorAll(".like-button")
+    .forEach((el) => el.addEventListener("click", likePost));
+
+  const editPost = document.querySelectorAll(".edit-button");
+
+  editPost.forEach((el) =>
+    el.addEventListener("click", () => {
+      console.log(el.dataset.id);
+      console.log(el.dataset.title);
+      console.log(el.dataset.body);
+      console.log(el.dataset.likes);
+      editForm.dataset.id = `${el.dataset.id}`;
+
+      editTitleContent.value = el.dataset.title;
+      editPostContent.value = el.dataset.body;
+
+      editModalWindow.classList.toggle("active");
+      overlay.classList.toggle("hidden");
+    })
+  );
+
+  const rawLi = result.items;
+  const finalLi = rawLi.length;
+  const size = 30 + 23.5 * finalLi;
+  document.getElementById("overlay").style.height = `${size}vh`;
+  editForm.addEventListener("submit", editPostToServer);
+
+  postList = document.querySelector(".post-list");
+}
+
+async function uploadPages() {
+  const response = await fetch(
+    "https://pocketbase.sksoldev.com/api/collections/blog/records"
+  );
+  const result = await response.json();
+
+  const totalPages = result.totalPages;
+  for (let i = 1; i <= totalPages; i++) {
+    const paginationMenu = document.querySelector("#pagination-menu");
+
+    const button = document.createElement("button");
+    // Add class
+    button.className = `pagination-btn w-12 h-12 font-bold hover:bg-slate-300 hover:scale-110 bg-slate-400 flex items-center justify-center rounded-lg transition-all duration-300 hover:shadow-lg hover:shadow-slate-700 active:translate-y-0.5 active:bg-slate-700 active:text-white`;
+
+    //Add id
+
+    button.innerHTML = `${i}`;
+    paginationMenu.appendChild(button);
+  }
+  const paginationBtn = document
+    .querySelectorAll(".pagination-btn")
+    .forEach((el) =>
+      el.addEventListener("click", () => downloadPageNumber(el))
+    );
+}
+
+async function uploadPosts() {
+  const response = await fetch(
+    "https://pocketbase.sksoldev.com/api/collections/blog/records?sort=-created"
+  );
+  const result = await response.json();
+
+  console.log(result);
+
+  result.items.forEach((element) => {
+    template(element);
+  });
+
+  document.querySelectorAll(".delete-button").forEach((el) =>
+    el.addEventListener("click", () => {
+      deleteModalWindow.classList.toggle("active");
+      overlay.classList.toggle("hidden");
+      const span = deleteForm.querySelector("#span");
+      console.log(span.textContent);
+      console.log(`${el.dataset.title}`);
+      deleteForm.dataset.id = `${el.dataset.id}`;
+      span.textContent = `${el.dataset.title}`;
+    })
+  );
+
+  const btnLike = document
+    .querySelectorAll(".like-button")
+    .forEach((el) => el.addEventListener("click", likePost));
+
+  const editPost = document.querySelectorAll(".edit-button");
+
+  editPost.forEach((el) =>
+    el.addEventListener("click", () => {
+      console.log(el.dataset.id);
+      console.log(el.dataset.title);
+      console.log(el.dataset.body);
+      console.log(el.dataset.likes);
+      editForm.dataset.id = `${el.dataset.id}`;
+
+      editTitleContent.value = el.dataset.title;
+      editPostContent.value = el.dataset.body;
+
+      editModalWindow.classList.toggle("active");
+      overlay.classList.toggle("hidden");
+    })
+  );
+
+  const rawLi = result.items;
+  const finalLi = rawLi.length;
+  const size = 30 + 23.5 * finalLi;
+  document.getElementById("overlay").style.height = `${size}vh`;
+  editForm.addEventListener("submit", editPostToServer);
+
+  uploadPages();
 }
