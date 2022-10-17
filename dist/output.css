@@ -575,14 +575,6 @@ video {
   left: 0px;
 }
 
-.right-0 {
-  right: 0px;
-}
-
-.bottom-0 {
-  bottom: 0px;
-}
-
 .top-0\.5 {
   top: 0.125rem;
 }
@@ -606,14 +598,6 @@ video {
 
 .ml-8 {
   margin-left: 2rem;
-}
-
-.block {
-  display: block;
-}
-
-.inline {
-  display: inline;
 }
 
 .flex {
@@ -865,12 +849,11 @@ video {
   right: 0;
   bottom: 0;
   width: 100%;
-  height: 200vh;
+  height: 100%;
   background-color: rgba(0, 0, 0, 0.2);
-  -webkit-backdrop-filter: blur(1px);
-          backdrop-filter: blur(1px);
+  -webkit-backdrop-filter: blur(2px);
+          backdrop-filter: blur(2px);
   z-index: 5;
-  border-radius: 15px;
 }
 
 .hidden {

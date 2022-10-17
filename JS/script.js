@@ -96,7 +96,7 @@ async function addPostToServer(e) {
     alert("It seems that you forgot to add a title, bro");
   } else {
     e.preventDefault();
-    const response = await fetch(
+    const result = await fetch(
       "https://pocketbase.sksoldev.com/api/collections/blog/records",
       {
         method: "POST",
@@ -111,63 +111,11 @@ async function addPostToServer(e) {
       }
     );
 
+    console.log(await result.json());
+
     addTitleContent.value = "";
 
     addPostContent.value = "";
-
-    // const data = new Date(rawAddPost.created);
-    // const currentTime = data.toLocaleDateString("ru", {
-    //   day: "2-digit",
-    //   month: "2-digit",
-    //   year: "numeric",
-    // });
-    // console.log(rawAddPost.created);
-
-    // const li = document.createElement("li");
-    // // Add class
-    // li.className = `flex flex-col justify-between p-6 bg-slate-100 space-y-8 rounded-lg`;
-
-    // //Add id
-
-    // console.log(rawAddPost.id);
-
-    // li.setAttribute("id", `${rawAddPost.id}`);
-
-    // li.innerHTML = `<div class="flex justify-between items-center">
-    //           <h2 class="text-2xl">${rawAddPost.title}</h2>
-    //           <div class="flex items-center space-x-3">
-    //             <button
-    //               class="px-7 py-2 bg-blue-400 rounded-2xl text-white hover:bg-blue-300 active:bg-blue-700 hover:shadow-lg hover:shadow-slate-500 transition-all duration-200 active:translate-y-0.5"
-    //             >
-    //               Edit
-    //             </button>
-    //             <button
-    //               class="px-4 py-2 bg-blue-400 rounded-2xl text-white hover:bg-blue-300 active:bg-blue-700 hover:shadow-lg hover:shadow-slate-500 transition-all duration-200 active:translate-y-0.5"
-    //             >
-    //               Delete
-    //             </button>
-    //           </div>
-    //         </div>
-
-    //         <div>
-    //          ${rawAddPost.body}
-    //         </div>
-    //         <!-- Likes and Date -->
-    //         <div class="flex justify-between items-center">
-    //           <div class="relative">
-    //             <p class="ml-8">${rawAddPost.likes}</p>
-    //             <div
-    //               class="h-6 w-6 absolute top-0.5 -left-0 hover:scale-125 rounded-2xl hover:bg-pink-500 transition-all active:translate-y-1 hover:shadow-lg hover:shadow-slate-500 duration-300"
-    //             >
-    //               <img src="../img/like.svg" style="fill: white" alt="" />
-    //             </div>
-    //           </div>
-    //           <div>${currentTime}</div>
-    //         </div>`;
-
-    // const theFirstChild = postList.firstChild;
-
-    // postList.insertBefore(li, theFirstChild);
 
     postList.innerHTML = "";
     uploadPosts();
