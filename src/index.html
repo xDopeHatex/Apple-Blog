@@ -68,7 +68,7 @@
         <form
           id="edit-form"
           data-id=""
-          class="edit-modal-window hidden sticky top-[20rem] bg-slate-200 flex-col p-6 space-y-5 rounded-lg z-10 w-full transition-all duration-300"
+          class="edit-modal-window hidden scale-0 sticky top-[5rem] bg-slate-200 flex-col p-6 space-y-5 rounded-lg z-10 w-full transition-all duration-300"
         >
           <div class="flex justify-between items-center">
             <p class="text-2xl">Edit post</p>
@@ -106,11 +106,11 @@
         <div
           data-id=""
           id="delete-form"
-          class="delete-modal-window absolute scale-0 bg-slate-200 flex-col p-6 space-y-5 rounded-lg z-10 w-full transition-all duration-300"
+          class="delete-modal-window sticky hidden top-[5rem] scale-0 bg-slate-200 flex-col p-6 space-y-5 rounded-lg z-10 w-full transition-all duration-300"
         >
           <div class="flex justify-between items-center">
             <p class="text-2xl">Delete post</p>
-            <button type="button" class="h-9 w-9 group delete-button-close">
+            <button type="click" class="h-9 w-9 group delete-button-close">
               <img
                 class="group-hover:bg-pink-300 p-2 rounded-full active:translate-y-0.5 group-hover:shadow-lg group-hover:shadow-slate-700 transition-all duration-200"
                 src="../img/cross.png"

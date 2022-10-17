@@ -584,8 +584,8 @@ video {
   right: 0px;
 }
 
-.top-\[20rem\] {
-  top: 20rem;
+.top-\[5rem\] {
+  top: 5rem;
 }
 
 .top-0\.5 {
@@ -852,10 +852,13 @@ video {
 .edit-modal-window.active {
   transform: translateY(0);
   display: flex;
+  transform: scale(1);
 }
 
 .delete-modal-window.active {
   transform: scale(1);
+  transform: translateY(0);
+  display: flex;
 }
 
 .overlay {
@@ -866,7 +869,7 @@ video {
   bottom: 0;
   /* width: 100%;
   height: 100%; */
-  height: 650vh;
+  min-height: 100vh;
   background-color: rgba(0, 0, 0, 0.2);
   -webkit-backdrop-filter: blur(2px);
           backdrop-filter: blur(2px);

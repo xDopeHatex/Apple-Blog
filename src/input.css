@@ -16,10 +16,13 @@
 .edit-modal-window.active {
   transform: translateY(0);
   display: flex;
+  transform: scale(1);
 }
 
 .delete-modal-window.active {
   transform: scale(1);
+  transform: translateY(0);
+  display: flex;
 }
 
 .overlay {
@@ -31,7 +34,7 @@
   /* width: 100%;
   height: 100%; */
 
-  height: 650vh;
+  min-height: 100vh;
   background-color: rgba(0, 0, 0, 0.2);
   backdrop-filter: blur(2px);
   z-index: 5;

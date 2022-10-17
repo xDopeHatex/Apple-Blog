@@ -38,6 +38,10 @@ const deleteForm = document.querySelector("#delete-form");
 uploadPosts();
 
 //Add Modal Window
+const closeDeleteModal = function () {
+  deleteModalWindow.classList.remove("active");
+  overlay.classList.add("hidden");
+};
 
 const closeAddModal = function () {
   addModalWindow.classList.remove("active");
@@ -50,8 +54,10 @@ addPost.addEventListener("click", () => {
 });
 
 addBtnClose.addEventListener("click", closeAddModal);
+deleteBtnClose.addEventListener("click", closeDeleteModal);
 
 overlay.addEventListener("click", closeAddModal);
+overlay.addEventListener("click", closeDeleteModal);
 
 document.addEventListener("keydown", function (e) {
   if (
@@ -62,11 +68,6 @@ document.addEventListener("keydown", function (e) {
     closeEditModal();
   }
 });
-
-const closeDeleteModal = function () {
-  deleteModalWindow.classList.remove("active");
-  overlay.classList.add("hidden");
-};
 
 document.addEventListener("keydown", function (e) {
   if (e.key === "Escape" && deleteModalWindow.classList.contains("active")) {
@@ -144,20 +145,8 @@ async function uploadPosts() {
       console.log(`${el.dataset.title}`);
       deleteForm.dataset.id = `${el.dataset.id}`;
       span.textContent = `${el.dataset.title}`;
-
-      window.scrollTo({ top: 0, behavior: "smooth" });
     })
   );
-
-  const closeDeleteModal = function () {
-    deleteModalWindow.classList.remove("active");
-    overlay.classList.add("hidden");
-  };
-
-  deleteBtnClose.addEventListener("click", closeDeleteModal);
-  // const btnEdit = document
-  //   .querySelectorAll(".edit-button")
-  //   .forEach((el) => el.addEventListener("click", editPostToServer));
 
   const btnLike = document
     .querySelectorAll(".like-button")
@@ -189,7 +178,7 @@ async function uploadPosts() {
 
   console.log(finalLi);
 
-  const size = 12 + 22 * finalLi;
+  const size = 30 + 25 * finalLi;
 
   console.log(size);
 
