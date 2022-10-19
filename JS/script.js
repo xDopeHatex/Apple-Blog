@@ -1,5 +1,6 @@
 "use strict";
 
+// import axios from "axios";
 import g from "./script2.js";
 
 g();
@@ -177,7 +178,7 @@ function template(item) {
 
   const li = document.createElement("li");
   // Add class
-  li.className = `post flex flex-col transition-all duration-300 hover:bg-slate-300 justify-between p-6 bg-slate-100 space-y-8 rounded-lg`;
+  li.className = `post flex flex-col transition-all duration-300 hover:bg-slate-200 justify-between p-6 bg-slate-100 space-y-8 rounded-lg group`;
 
   //Add id
 
@@ -187,12 +188,12 @@ function template(item) {
             <h2 class="title text-2xl">${item.title}</h2>
             <div class="flex items-center  space-x-3" >
               <button data-id="${item.id}" data-title="${item.title}" data-body="${item.body}" data-likes="${item.likes}"      
-                class="edit-button px-7 py-2 bg-blue-400 rounded-2xl text-white hover:bg-blue-300 active:bg-blue-700 hover:shadow-lg hover:shadow-slate-500 transition-all duration-200 active:translate-y-0.5"
+                class="edit-button px-7 py-2 bg-blue-400 rounded-2xl text-white hover:bg-blue-300 active:bg-blue-700 hover:shadow-lg hover:shadow-slate-500 transition-all duration-200 active:translate-y-0.5 scale-0 group-hover:scale-100 "
               >
                 Edit
               </button>
               <button data-id="${item.id}"  data-title="${item.title}" 
-                class="delete-button   px-4 py-2 bg-rose-800 rounded-2xl text-white hover:bg-rose-700 active:bg-rose-900 hover:shadow-lg hover:shadow-slate-500 transition-all duration-200 active:translate-y-0.5"
+                class="delete-button   px-4 py-2 bg-rose-800 rounded-2xl text-white hover:bg-rose-700 active:bg-rose-900 hover:shadow-lg hover:shadow-slate-500 transition-all duration-200 active:translate-y-0.5 scale-0 group-hover:scale-100 "
               >
                 Delete
               </button>
@@ -460,6 +461,25 @@ async function uploadPosts() {
     editForm.addEventListener("submit", editPostToServer);
 
     uploadPages();
+    loader.classList.add("hidden");
+    loader.classList.remove("flex");
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+const quotes = document.querySelector(".kenny");
+console.log(quotes);
+
+kennyQuotes();
+
+async function kennyQuotes() {
+  try {
+    loader.classList.add("flex");
+    loader.classList.remove("hidden");
+    const result = await axios.get("https://api.kanye.rest/");
+
+    quotes.textContent = result.data.quote;
     loader.classList.add("hidden");
     loader.classList.remove("flex");
   } catch (error) {

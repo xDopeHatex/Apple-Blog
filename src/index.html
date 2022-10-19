@@ -5,7 +5,89 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link href="../dist/output.css" rel="stylesheet" />
   </head>
-  <body class="relative">
+  <body class="relative mb-7">
+    <!-- Loader -->
+    <div
+      class="loader lead z-50 w-full bg-slate-800 absolute h-screen justify-center items-center hidden"
+    >
+      <div class="jelly"></div>
+
+      <svg width="0" height="0" class="jelly-maker">
+        <defs>
+          <filter id="uib-jelly-ooze">
+            <feGaussianBlur
+              in="SourceGraphic"
+              stdDeviation="6.25"
+              result="blur"
+            />
+            <feColorMatrix
+              in="blur"
+              mode="matrix"
+              values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -7"
+              result="ooze"
+            />
+            <feBlend in="SourceGraphic" in2="ooze" />
+          </filter>
+        </defs>
+      </svg>
+    </div>
+    <!-- Parallax -->
+    <div class="header">
+      <!--Content before waves-->
+      <div class="inner-header flex flex-col">
+        <h1 class="kenny mx-24 pt-[20rem]"></h1>
+        <div class="flex justify-between items-center w-5/6">
+          <div></div>
+          <h2 class="text-xl">Kenny West</h2>
+        </div>
+      </div>
+
+      <!--Waves Container-->
+      <div>
+        <svg
+          class="waves"
+          xmlns="http://www.w3.org/2000/svg"
+          xmlns:xlink="http://www.w3.org/1999/xlink"
+          viewBox="0 24 150 28"
+          preserveAspectRatio="none"
+          shape-rendering="auto"
+        >
+          <defs>
+            <path
+              id="gentle-wave"
+              d="M-160 44c30 0 58-18 88-18s 58 18 88 18 58-18 88-18 58 18 88 18 v44h-352z"
+            />
+          </defs>
+          <g class="parallax">
+            <use
+              xlink:href="#gentle-wave"
+              x="48"
+              y="0"
+              fill="rgba(255,255,255,0.7"
+            />
+            <use
+              xlink:href="#gentle-wave"
+              x="48"
+              y="3"
+              fill="rgba(255,255,255,0.5)"
+            />
+            <use
+              xlink:href="#gentle-wave"
+              x="48"
+              y="5"
+              fill="rgba(255,255,255,0.3)"
+            />
+            <use xlink:href="#gentle-wave" x="48" y="7" fill="#fff" />
+          </g>
+        </svg>
+      </div>
+      <!--Waves end-->
+    </div>
+    <!--Header ends-->
+
+    <!--Content starts-->
+    <div class="content flex1"></div>
+    <!--Content ends-->
     <!-- Loader -->
     <div
       class="loader lead z-50 w-full bg-slate-800 absolute h-screen justify-center items-center hidden"
@@ -38,15 +120,15 @@
       <section class="flex flex-col space-y-8 relative">
         <!-- Header -->
         <header
-          class="flex flex-col justify-center space-y-5 bg-slate-200 rounded-lg"
+          class="flex flex-col justify-center space-y-5 bg-slate-100 rounded-lg"
         >
           <div
             class="flex justify-between items-center bg-slate-100 p-6 rounded-lg"
           >
             <div class="flex items-center space-x-4 relative justify-center">
-              <h1 class="pl-10 text-3xl font-semibold">Apple Blog</h1>
-              <div class="h-8 w-8 absolute -top-[0.3rem] -left-5">
-                <img src="../img/logo.png" alt="" />
+              <h1 class="pl-10 text-3xl font-semibold">Peach Blog</h1>
+              <div class="h-12 w-12 absolute -top-[0.3rem] -left-7">
+                <img src="../img/peach.png" alt="" />
               </div>
             </div>
             <button
@@ -60,7 +142,7 @@
           >
             <div></div>
             <button
-              class="add-post bg-pink-500 px-6 py-3 text-white rounded-2xl hover:bg-pink-400 active:bg-pink-700 hover:shadow-lg hover:shadow-slate-500 transition-all duration-200 active:translate-y-0.5"
+              class="add-post bg-orange-500 px-6 py-3 text-white rounded-2xl hover:bg-orange-400 active:bg-orange-700 hover:shadow-lg hover:shadow-slate-500 transition-all duration-200 active:translate-y-0.5"
             >
               Add Post
             </button>
@@ -212,7 +294,7 @@
         <ul class="post-list flex flex-col space-y-2 justify-center relative">
           <!-- Posts -->
           <li
-            class="post flex-col justify-between p-6 bg-slate-100 space-y-8 rounded-lg hidden transition-all duration-300 hover:bg-slate-300"
+            class="post flex-col justify-between p-6 bg-slate-100 space-y-8 rounded-lg transition-all duration-300 hover:bg-slate-200 group hidden"
           >
             <div class="flex justify-between items-center">
               <h2 class="title text-2xl">${item.title}</h2>
@@ -222,12 +304,12 @@
                   data-title="${item.title}"
                   data-body="${item.body}"
                   data-likes="${item.likes}"
-                  class="edit-button px-7 py-2 bg-blue-400 rounded-2xl text-white hover:bg-blue-300 active:bg-blue-700 hover:shadow-lg hover:shadow-slate-500 transition-all duration-200 active:translate-y-0.5"
+                  class="edit-button px-7 py-2 bg-blue-400 rounded-2xl text-white hover:bg-blue-300 active:bg-blue-700 hover:shadow-lg hover:shadow-slate-500 transition-all duration-200 active:translate-y-0.5 scale-0 group-hover:scale-100"
                 >
                   Edit
                 </button>
                 <button
-                  class="delete-button px-4 py-2 bg-rose-800 rounded-2xl text-white hover:bg-rose-700 active:bg-rose-900 hover:shadow-lg hover:shadow-slate-500 transition-all duration-200 active:translate-y-0.5"
+                  class="delete-button px-4 py-2 bg-rose-800 rounded-2xl text-white hover:bg-rose-700 active:bg-rose-900 hover:shadow-lg hover:shadow-slate-500 transition-all duration-200 active:translate-y-0.5 scale-0 group-hover:scale-100"
                 >
                   Delete
                 </button>
