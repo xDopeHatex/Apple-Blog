@@ -13,6 +13,11 @@
   transform: translateY(0);
 }
 
+.login-modal-window.active {
+  transform: scale(1);
+  transform: translateY(0);
+}
+
 .edit-modal-window.active {
   transform: translateY(0);
   display: flex;
@@ -52,4 +57,75 @@ input:focus,
 textarea:focus,
 select:focus {
   outline: none;
+}
+
+.jelly {
+  --uib-size: 150px;
+  --uib-speed: 0.9s;
+  --uib-color: black;
+
+  position: relative;
+  height: calc(var(--uib-size) / 2);
+  width: var(--uib-size);
+  filter: url("#uib-jelly-ooze");
+  animation: rotate calc(var(--uib-speed) * 2) linear infinite;
+}
+
+.jelly::before,
+.jelly::after {
+  content: "";
+  position: absolute;
+  top: 0%;
+  left: 25%;
+  width: 50%;
+  height: 100%;
+  background: white;
+  border-radius: 100%;
+}
+
+.jelly::before {
+  animation: shift-left var(--uib-speed) ease infinite;
+}
+
+.jelly::after {
+  animation: shift-right var(--uib-speed) ease infinite;
+}
+
+.jelly-maker {
+  width: 0;
+  height: 0;
+  position: absolute;
+}
+
+@keyframes rotate {
+  0%,
+  49.999%,
+  100% {
+    transform: none;
+  }
+
+  50%,
+  99.999% {
+    transform: rotate(90deg);
+  }
+}
+
+@keyframes shift-left {
+  0%,
+  100% {
+    transform: translateX(0%);
+  }
+  50% {
+    transform: scale(0.65) translateX(-75%);
+  }
+}
+
+@keyframes shift-right {
+  0%,
+  100% {
+    transform: translateX(0%);
+  }
+  50% {
+    transform: scale(0.65) translateX(75%);
+  }
 }

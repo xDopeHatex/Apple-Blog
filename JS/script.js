@@ -9,7 +9,7 @@ console.log(d);
 let text = d.toLocaleString();
 
 console.log(text);
-
+const loader = document.querySelector(".loader");
 const addModalWindow = document.querySelector(".add-modal-window");
 const addBtnClose = document.querySelector(".add-button-close");
 const addUploadPost = document.querySelector(".add-upload-post");
@@ -34,6 +34,48 @@ const deleteModalWindow = document.querySelector(".delete-modal-window");
 const deleteBtnClose = document.querySelector(".delete-button-close");
 const deletePostBtn = document.querySelector(".delete-post-btn");
 const deleteForm = document.querySelector("#delete-form");
+
+// Autorization Page
+
+const loginForm = document.querySelector("#login-form");
+const loginBtnClose = document.querySelector(".login-button-close");
+const addLogin = document.querySelector(".add-login");
+const addPassword = document.querySelector(".add-password");
+const loginBtn = document.querySelector(".login-btn");
+const loginBtnOpen = document.querySelector(".login-btn-open");
+const loginModalWindow = document.querySelector(".login-modal-window");
+
+//Login Modal Window
+const closeLoginModal = function () {
+  loginModalWindow.classList.remove("active");
+  overlay.classList.add("hidden");
+};
+
+loginBtnOpen.addEventListener("click", () => {
+  loginModalWindow.classList.toggle("active");
+  overlay.classList.toggle("hidden");
+});
+
+document.addEventListener("keydown", function (e) {
+  if (e.key === "Escape" && loginModalWindow.classList.contains("active")) {
+    closeLoginModal();
+  }
+});
+
+loginBtnClose.addEventListener("click", closeLoginModal);
+
+overlay.addEventListener("click", closeLoginModal);
+
+loginForm.addEventListener("submit", loginToServer);
+
+function loginToServer(e) {
+  e.preventDefault();
+  const login = addLogin.value;
+  const password = addPassword.value;
+
+  console.log(login);
+  console.log(password);
+}
 
 uploadPosts();
 
@@ -124,59 +166,6 @@ async function addPostToServer(e) {
   }
 }
 
-// async function uploadPosts() {
-//   const response = await fetch(
-//     "https://pocketbase.sksoldev.com/api/collections/blog/records?sort=-created"
-//   );
-//   const result = await response.json();
-
-//   console.log(result);
-
-//   result.items.forEach((element) => {
-//     template(element);
-//   });
-
-//   document.querySelectorAll(".delete-button").forEach((el) =>
-//     el.addEventListener("click", () => {
-//       deleteModalWindow.classList.toggle("active");
-//       overlay.classList.toggle("hidden");
-//       const span = deleteForm.querySelector("#span");
-//       console.log(span.textContent);
-//       console.log(`${el.dataset.title}`);
-//       deleteForm.dataset.id = `${el.dataset.id}`;
-//       span.textContent = `${el.dataset.title}`;
-//     })
-//   );
-
-//   const btnLike = document
-//     .querySelectorAll(".like-button")
-//     .forEach((el) => el.addEventListener("click", likePost));
-
-//   const editPost = document.querySelectorAll(".edit-button");
-
-//   editPost.forEach((el) =>
-//     el.addEventListener("click", () => {
-//       console.log(el.dataset.id);
-//       console.log(el.dataset.title);
-//       console.log(el.dataset.body);
-//       console.log(el.dataset.likes);
-//       editForm.dataset.id = `${el.dataset.id}`;
-
-//       editTitleContent.value = el.dataset.title;
-//       editPostContent.value = el.dataset.body;
-
-//       editModalWindow.classList.toggle("active");
-//       overlay.classList.toggle("hidden");
-//     })
-//   );
-
-//   const rawLi = result.items;
-//   const finalLi = rawLi.length;
-//   const size = 30 + 23.5 * finalLi;
-//   document.getElementById("overlay").style.height = `${size}vh`;
-//   editForm.addEventListener("submit", editPostToServer);
-// }
-
 function template(item) {
   const data = new Date(item.created);
 
@@ -188,7 +177,7 @@ function template(item) {
 
   const li = document.createElement("li");
   // Add class
-  li.className = `post flex flex-col justify-between p-6 bg-slate-100 space-y-8 rounded-lg`;
+  li.className = `post flex flex-col transition-all duration-300 hover:bg-slate-300 justify-between p-6 bg-slate-100 space-y-8 rounded-lg`;
 
   //Add id
 
@@ -203,7 +192,7 @@ function template(item) {
                 Edit
               </button>
               <button data-id="${item.id}"  data-title="${item.title}" 
-                class="delete-button   px-4 py-2 bg-blue-400 rounded-2xl text-white hover:bg-blue-300 active:bg-blue-700 hover:shadow-lg hover:shadow-slate-500 transition-all duration-200 active:translate-y-0.5"
+                class="delete-button   px-4 py-2 bg-rose-800 rounded-2xl text-white hover:bg-rose-700 active:bg-rose-900 hover:shadow-lg hover:shadow-slate-500 transition-all duration-200 active:translate-y-0.5"
               >
                 Delete
               </button>
@@ -218,7 +207,7 @@ function template(item) {
             <button  class="relative like-button" >
               <p class="likes ml-8">${item.likes}</p>
               <div
-                class="h-6 w-6 absolute top-0.5 -left-0 hover:scale-125 rounded-2xl hover:bg-pink-500 transition-all active:translate-y-1 hover:shadow-lg hover:shadow-slate-500 duration-300"
+                class="h-6 w-6 absolute top-0.5 -left-0 hover:scale-125 rounded-2xl hover:bg-pink-500 transition-all active:translate-y-1 hover:shadow-lg hover:shadow-slate-500 duration-300 active:bg-pink-700"
               >
                 <img    src="../img/like.svg" style="fill: white" alt="" />
               </div>
@@ -403,8 +392,6 @@ async function uploadPages() {
     // Add class
     button.className = `pagination-btn w-12 h-12 font-bold hover:bg-slate-300 hover:scale-110 bg-slate-400 flex items-center justify-center rounded-lg transition-all duration-300 hover:shadow-lg hover:shadow-slate-700 active:translate-y-0.5 active:bg-slate-700 active:text-white`;
 
-    //Add id
-
     button.innerHTML = `${i}`;
     paginationMenu.appendChild(button);
   }
@@ -416,56 +403,66 @@ async function uploadPages() {
 }
 
 async function uploadPosts() {
-  const response = await fetch(
-    "https://pocketbase.sksoldev.com/api/collections/blog/records?sort=-created"
-  );
-  const result = await response.json();
+  try {
+    loader.classList.add("flex");
+    loader.classList.remove("hidden");
+    const result = await axios.get(
+      "https://pocketbase.sksoldev.com/api/collections/blog/records?sort=-created"
+    );
 
-  console.log(result);
+    console.log(result);
+    console.log(result.data.items);
 
-  result.items.forEach((element) => {
-    template(element);
-  });
+    result.data.items.forEach((element) => {
+      template(element);
+    });
 
-  document.querySelectorAll(".delete-button").forEach((el) =>
-    el.addEventListener("click", () => {
-      deleteModalWindow.classList.toggle("active");
-      overlay.classList.toggle("hidden");
-      const span = deleteForm.querySelector("#span");
-      console.log(span.textContent);
-      console.log(`${el.dataset.title}`);
-      deleteForm.dataset.id = `${el.dataset.id}`;
-      span.textContent = `${el.dataset.title}`;
-    })
-  );
+    document.querySelectorAll(".delete-button").forEach((el) =>
+      el.addEventListener("click", () => {
+        deleteModalWindow.classList.toggle("active");
+        overlay.classList.toggle("hidden");
+        const span = deleteForm.querySelector("#span");
+        console.log(span.textContent);
+        console.log(`${el.dataset.title}`);
+        deleteForm.dataset.id = `${el.dataset.id}`;
+        span.textContent = `${el.dataset.title}`;
+      })
+    );
 
-  const btnLike = document
-    .querySelectorAll(".like-button")
-    .forEach((el) => el.addEventListener("click", likePost));
+    document
+      .querySelectorAll(".like-button")
+      .forEach((el) => el.addEventListener("click", likePost));
 
-  const editPost = document.querySelectorAll(".edit-button");
+    const editPost = document.querySelectorAll(".edit-button");
 
-  editPost.forEach((el) =>
-    el.addEventListener("click", () => {
-      console.log(el.dataset.id);
-      console.log(el.dataset.title);
-      console.log(el.dataset.body);
-      console.log(el.dataset.likes);
-      editForm.dataset.id = `${el.dataset.id}`;
+    editPost.forEach((el) =>
+      el.addEventListener("click", () => {
+        console.log(el.dataset.id);
+        console.log(el.dataset.title);
+        console.log(el.dataset.body);
+        console.log(el.dataset.likes);
+        editForm.dataset.id = `${el.dataset.id}`;
 
-      editTitleContent.value = el.dataset.title;
-      editPostContent.value = el.dataset.body;
+        editTitleContent.value = el.dataset.title;
+        editPostContent.value = el.dataset.body;
 
-      editModalWindow.classList.toggle("active");
-      overlay.classList.toggle("hidden");
-    })
-  );
+        editModalWindow.classList.toggle("active");
+        overlay.classList.toggle("hidden");
+      })
+    );
 
-  const rawLi = result.items;
-  const finalLi = rawLi.length;
-  const size = 30 + 23.5 * finalLi;
-  document.getElementById("overlay").style.height = `${size}vh`;
-  editForm.addEventListener("submit", editPostToServer);
+    const rawLi = result.data.items;
+    console.log(rawLi);
+    const finalLi = rawLi.length;
+    console.log(finalLi);
+    const size = 30 + 23.5 * finalLi;
+    document.getElementById("overlay").style.height = `${size}vh`;
+    editForm.addEventListener("submit", editPostToServer);
 
-  uploadPages();
+    uploadPages();
+    loader.classList.add("hidden");
+    loader.classList.remove("flex");
+  } catch (error) {
+    console.log(error);
+  }
 }
