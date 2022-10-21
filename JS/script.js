@@ -1,6 +1,7 @@
 "use strict";
 
 // import axios from "axios";
+
 import g from "./script2.js";
 
 g();
@@ -78,6 +79,7 @@ function loginToServer(e) {
   console.log(password);
 }
 
+kennyQuotes();
 uploadPosts();
 
 //Add Modal Window
@@ -134,36 +136,32 @@ overlay.addEventListener("click", closeEditModal);
 addForm.addEventListener("submit", addPostToServer);
 
 async function addPostToServer(e) {
-  if (addPostContent.value === "") {
-    alert("It seems that you forgot to add a post, bro");
-  } else if (addTitleContent.value === "") {
-    alert("It seems that you forgot to add a title, bro");
-  } else {
-    e.preventDefault();
-    const result = await fetch(
-      "https://pocketbase.sksoldev.com/api/collections/blog/records",
-      {
-        method: "POST",
-        body: JSON.stringify({
+  try {
+    if (addPostContent.value === "") {
+      alert("It seems that you forgot to add a post, bro");
+    } else if (addTitleContent.value === "") {
+      alert("It seems that you forgot to add a title, bro");
+    } else {
+      e.preventDefault();
+      await axios.post(
+        "https://pocketbase.sksoldev.com/api/collections/blog/records",
+        {
           body: addPostContent.value,
 
           title: addTitleContent.value,
-        }),
-        headers: {
-          "Content-type": "application/json; charset=UTF-8",
-        },
-      }
-    );
+        }
+      );
 
-    console.log(await result.json());
+      addTitleContent.value = "";
 
-    addTitleContent.value = "";
+      addPostContent.value = "";
 
-    addPostContent.value = "";
-
-    postList.innerHTML = "";
-    uploadPosts();
-    closeAddModal();
+      postList.innerHTML = "";
+      uploadPosts();
+      closeAddModal();
+    }
+  } catch (error) {
+    console.log(error);
   }
 }
 
@@ -199,7 +197,9 @@ function template(item) {
               </button>
             </div>
           </div>
-          
+          <div class="max-w-[17rem] max-h-[17rem] hover:scale-110 transition-all duration-300">
+              <img id="img" src="https://pocketbase.sksoldev.com/api/files/blog/${item.id}/${item.image}" alt="" />
+            </div>
           <div class='body'>
            ${item.body}
           </div>
@@ -227,24 +227,17 @@ async function likePost(e) {
   let resultLikes = "";
 
   try {
-    resultLikes = await fetch(
+    resultLikes = await axios.patch(
       `https://pocketbase.sksoldev.com/api/collections/blog/records/${parentDiv.id}`,
       {
-        method: "PATCH",
-        body: JSON.stringify({
-          likes: totalLikes,
-        }),
-
-        headers: {
-          "Content-type": "application/json; charset=UTF-8",
-        },
+        likes: totalLikes,
       }
     );
   } catch (error) {
-    alert(error);
+    console.log(error);
   }
 
-  const finalLikes = await resultLikes.json();
+  const finalLikes = await resultLikes.data;
 
   parentDiv.querySelector(".likes").textContent = finalLikes.likes;
 }
@@ -264,24 +257,18 @@ async function editPostToServer(e) {
   let rawPostResult = "";
 
   try {
-    rawPostResult = await fetch(
+    rawPostResult = await axios.patch(
       `https://pocketbase.sksoldev.com/api/collections/blog/records/${id}`,
       {
-        method: "PATCH",
-        body: JSON.stringify({
-          body: beforeServerBody,
-          title: beforeServerTitle,
-        }),
-        headers: {
-          "Content-type": "application/json; charset=UTF-8",
-        },
+        body: beforeServerBody,
+        title: beforeServerTitle,
       }
     );
   } catch (error) {
     alert(error);
   }
 
-  const postResult = await rawPostResult.json();
+  const postResult = await rawPostResult.data;
   const afterServerTitle = postResult.title;
   const afterServerBody = postResult.body;
 
@@ -309,98 +296,107 @@ async function editPostToServer(e) {
 deletePostBtn.addEventListener("click", deletePost);
 
 async function deletePost(e) {
-  await fetch(
-    `https://pocketbase.sksoldev.com/api/collections/blog/records/${deleteForm.dataset.id}`,
-    {
-      method: "DELETE",
-    }
-  );
+  try {
+    await axios.delete(
+      `https://pocketbase.sksoldev.com/api/collections/blog/records/${deleteForm.dataset.id}`
+    );
 
-  postList.querySelector(`#${deleteForm.dataset.id}`).remove();
+    postList.querySelector(`#${deleteForm.dataset.id}`).remove();
 
-  closeDeleteModal();
+    closeDeleteModal();
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 async function downloadPageNumber(e) {
-  console.log(e.textContent);
-  const response = await fetch(
-    `https://pocketbase.sksoldev.com/api/collections/blog/records?page=${e.textContent}&sort=-created`
-  );
-  const result = await response.json();
+  try {
+    console.log(e.textContent);
+    const response = await axios.get(
+      `https://pocketbase.sksoldev.com/api/collections/blog/records?page=${e.textContent}&sort=-created`
+    );
+    const result = await response.data;
 
-  console.log(result);
+    console.log(result);
 
-  postList.innerHTML = "";
+    postList.innerHTML = "";
 
-  result.items.forEach((element) => {
-    template(element);
-  });
+    result.items.forEach((element) => {
+      template(element);
+    });
 
-  document.querySelectorAll(".delete-button").forEach((el) =>
-    el.addEventListener("click", () => {
-      deleteModalWindow.classList.toggle("active");
-      overlay.classList.toggle("hidden");
-      const span = deleteForm.querySelector("#span");
-      console.log(span.textContent);
-      console.log(`${el.dataset.title}`);
-      deleteForm.dataset.id = `${el.dataset.id}`;
-      span.textContent = `${el.dataset.title}`;
-    })
-  );
+    document.querySelectorAll(".delete-button").forEach((el) =>
+      el.addEventListener("click", () => {
+        deleteModalWindow.classList.toggle("active");
+        overlay.classList.toggle("hidden");
+        const span = deleteForm.querySelector("#span");
+        console.log(span.textContent);
+        console.log(`${el.dataset.title}`);
+        deleteForm.dataset.id = `${el.dataset.id}`;
+        span.textContent = `${el.dataset.title}`;
+      })
+    );
 
-  const btnLike = document
-    .querySelectorAll(".like-button")
-    .forEach((el) => el.addEventListener("click", likePost));
+    const btnLike = document
+      .querySelectorAll(".like-button")
+      .forEach((el) => el.addEventListener("click", likePost));
 
-  const editPost = document.querySelectorAll(".edit-button");
+    const editPost = document.querySelectorAll(".edit-button");
 
-  editPost.forEach((el) =>
-    el.addEventListener("click", () => {
-      console.log(el.dataset.id);
-      console.log(el.dataset.title);
-      console.log(el.dataset.body);
-      console.log(el.dataset.likes);
-      editForm.dataset.id = `${el.dataset.id}`;
+    editPost.forEach((el) =>
+      el.addEventListener("click", () => {
+        console.log(el.dataset.id);
+        console.log(el.dataset.title);
+        console.log(el.dataset.body);
+        console.log(el.dataset.likes);
+        editForm.dataset.id = `${el.dataset.id}`;
 
-      editTitleContent.value = el.dataset.title;
-      editPostContent.value = el.dataset.body;
+        editTitleContent.value = el.dataset.title;
+        editPostContent.value = el.dataset.body;
 
-      editModalWindow.classList.toggle("active");
-      overlay.classList.toggle("hidden");
-    })
-  );
+        editModalWindow.classList.toggle("active");
+        overlay.classList.toggle("hidden");
+      })
+    );
 
-  const rawLi = result.items;
-  const finalLi = rawLi.length;
-  const size = 30 + 23.5 * finalLi;
-  document.getElementById("overlay").style.height = `${size}vh`;
-  editForm.addEventListener("submit", editPostToServer);
+    const rawLi = result.items;
+    const finalLi = rawLi.length;
+    const size = 30 + 23.5 * finalLi;
+    document.getElementById("overlay").style.height = `${size}vh`;
+    editForm.addEventListener("submit", editPostToServer);
 
-  postList = document.querySelector(".post-list");
+    postList = document.querySelector(".post-list");
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 async function uploadPages() {
-  const response = await fetch(
-    "https://pocketbase.sksoldev.com/api/collections/blog/records"
-  );
-  const result = await response.json();
-
-  const totalPages = result.totalPages;
-  for (let i = 1; i <= totalPages; i++) {
-    const paginationMenu = document.querySelector("#pagination-menu");
-
-    const button = document.createElement("button");
-    // Add class
-    button.className = `pagination-btn w-12 h-12 font-bold hover:bg-slate-300 hover:scale-110 bg-slate-400 flex items-center justify-center rounded-lg transition-all duration-300 hover:shadow-lg hover:shadow-slate-700 active:translate-y-0.5 active:bg-slate-700 active:text-white`;
-
-    button.innerHTML = `${i}`;
-    paginationMenu.appendChild(button);
-  }
-  const paginationBtn = document
-    .querySelectorAll(".pagination-btn")
-    .forEach((el) =>
-      el.addEventListener("click", () => downloadPageNumber(el))
+  try {
+    const response = await axios.get(
+      "https://pocketbase.sksoldev.com/api/collections/blog/records"
     );
+    const result = await response.data;
+
+    const totalPages = result.totalPages;
+    for (let i = 1; i <= totalPages; i++) {
+      const paginationMenu = document.querySelector("#pagination-menu");
+
+      const button = document.createElement("button");
+      // Add class
+      button.className = `pagination-btn w-12 h-12 font-bold hover:bg-slate-300 hover:scale-110 bg-slate-400 flex items-center justify-center rounded-lg transition-all duration-300 hover:shadow-lg hover:shadow-slate-700 active:translate-y-0.5 active:bg-slate-700 active:text-white`;
+
+      button.innerHTML = `${i}`;
+      paginationMenu.appendChild(button);
+    }
+    const paginationBtn = document
+      .querySelectorAll(".pagination-btn")
+      .forEach((el) =>
+        el.addEventListener("click", () => downloadPageNumber(el))
+      );
+  } catch (error) {
+    console.log(error);
+  }
 }
 
 async function uploadPosts() {
@@ -417,6 +413,9 @@ async function uploadPosts() {
     result.data.items.forEach((element) => {
       template(element);
     });
+
+    const img = postList.querySelector("#img");
+    console.log(img.src);
 
     document.querySelectorAll(".delete-button").forEach((el) =>
       el.addEventListener("click", () => {
@@ -470,8 +469,6 @@ async function uploadPosts() {
 
 const quotes = document.querySelector(".kenny");
 console.log(quotes);
-
-kennyQuotes();
 
 async function kennyQuotes() {
   try {
