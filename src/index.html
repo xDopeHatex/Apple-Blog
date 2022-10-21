@@ -172,7 +172,7 @@
           </div>
           <div>
             <textarea
-              name="post"
+              name="body"
               placeholder="Here goes your post..."
               class="add-post-content bg-slate-100 rounded-lg py-4 px-3 w-full min-h-[10rem]"
             ></textarea>
@@ -185,7 +185,7 @@
               >Add Image
               <input
                 id="inputImg"
-                name="inputImg"
+                name="image"
                 type="file"
                 class="hidden"
                 accept="image/png"
@@ -308,7 +308,7 @@
         <ul class="post-list flex flex-col space-y-2 justify-center relative">
           <!-- Posts -->
           <li
-            class="post flex-col justify-between p-6 bg-slate-100 space-y-8 rounded-lg transition-all duration-300 hover:bg-slate-200 group"
+            class="post flex-col justify-between p-6 bg-slate-100 space-y-14 rounded-lg transition-all duration-300 hover:bg-slate-200 group hidden"
           >
             <div class="flex justify-between items-center">
               <h2 class="title text-2xl">${item.title}</h2>
@@ -330,7 +330,7 @@
               </div>
             </div>
             <div
-              class="max-w-[17rem] max-h-[17rem] hover:scale-110 transition-all duration-300"
+              class="max-w-[17rem] max-h-[17rem] hover:scale-75 transition-all duration-300 my-8 -py-8 scale-50"
             >
               <img
                 class=""

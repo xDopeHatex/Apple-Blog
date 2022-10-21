@@ -622,6 +622,16 @@ video {
   margin-right: 6rem;
 }
 
+.my-6 {
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.my-8 {
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+}
+
 .mb-7 {
   margin-bottom: 1.75rem;
 }
@@ -648,10 +658,6 @@ video {
 
 .h-9 {
   height: 2.25rem;
-}
-
-.h-8 {
-  height: 2rem;
 }
 
 .h-6 {
@@ -682,10 +688,6 @@ video {
   width: 2.25rem;
 }
 
-.w-8 {
-  width: 2rem;
-}
-
 .w-6 {
   width: 1.5rem;
 }
@@ -701,6 +703,12 @@ video {
 .scale-0 {
   --tw-scale-x: 0;
   --tw-scale-y: 0;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+
+.scale-50 {
+  --tw-scale-x: .5;
+  --tw-scale-y: .5;
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 
@@ -748,6 +756,12 @@ video {
   margin-bottom: calc(0.5rem * var(--tw-space-y-reverse));
 }
 
+.space-y-14 > :not([hidden]) ~ :not([hidden]) {
+  --tw-space-y-reverse: 0;
+  margin-top: calc(3.5rem * calc(1 - var(--tw-space-y-reverse)));
+  margin-bottom: calc(3.5rem * var(--tw-space-y-reverse));
+}
+
 .space-x-3 > :not([hidden]) ~ :not([hidden]) {
   --tw-space-x-reverse: 0;
   margin-right: calc(0.75rem * var(--tw-space-x-reverse));
@@ -791,11 +805,6 @@ video {
   background-color: rgb(226 232 240 / var(--tw-bg-opacity));
 }
 
-.bg-slate-300 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(203 213 225 / var(--tw-bg-opacity));
-}
-
 .bg-blue-400 {
   --tw-bg-opacity: 1;
   background-color: rgb(96 165 250 / var(--tw-bg-opacity));
@@ -817,6 +826,10 @@ video {
 
 .p-2 {
   padding: 0.5rem;
+}
+
+.p-8 {
+  padding: 2rem;
 }
 
 .px-\[2\.33rem\] {
@@ -844,6 +857,16 @@ video {
   padding-bottom: 1rem;
 }
 
+.px-\[3rem\] {
+  padding-left: 3rem;
+  padding-right: 3rem;
+}
+
+.py-\[0\.7rem\] {
+  padding-top: 0.7rem;
+  padding-bottom: 0.7rem;
+}
+
 .px-\[4\.5rem\] {
   padding-left: 4.5rem;
   padding-right: 4.5rem;
@@ -864,39 +887,9 @@ video {
   padding-right: 1rem;
 }
 
-.px-\[4rem\] {
-  padding-left: 4rem;
-  padding-right: 4rem;
-}
-
-.py-\[2rem\] {
+.py-8 {
   padding-top: 2rem;
   padding-bottom: 2rem;
-}
-
-.py-\[1rem\] {
-  padding-top: 1rem;
-  padding-bottom: 1rem;
-}
-
-.py-\[0\.7rem\] {
-  padding-top: 0.7rem;
-  padding-bottom: 0.7rem;
-}
-
-.px-\[2rem\] {
-  padding-left: 2rem;
-  padding-right: 2rem;
-}
-
-.py-\[0\.6rem\] {
-  padding-top: 0.6rem;
-  padding-bottom: 0.6rem;
-}
-
-.px-\[3rem\] {
-  padding-left: 3rem;
-  padding-right: 3rem;
 }
 
 .pt-\[20rem\] {
@@ -1275,6 +1268,12 @@ p {
 .hover\:scale-125:hover {
   --tw-scale-x: 1.25;
   --tw-scale-y: 1.25;
+  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+}
+
+.hover\:scale-75:hover {
+  --tw-scale-x: .75;
+  --tw-scale-y: .75;
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 

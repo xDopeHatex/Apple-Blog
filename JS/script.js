@@ -149,11 +149,7 @@ async function addPostToServer(e) {
       console.log([...formData]);
       await axios.post(
         "https://pocketbase.sksoldev.com/api/collections/blog/records",
-        {
-          body: addPostContent.value,
-
-          title: addTitleContent.value,
-        }
+        formData
       );
 
       addTitleContent.value = "";
@@ -180,7 +176,7 @@ function template(item) {
 
   const li = document.createElement("li");
   // Add class
-  li.className = `post flex flex-col transition-all duration-300 hover:bg-slate-200 justify-between p-6 bg-slate-100 space-y-8 rounded-lg group`;
+  li.className = `post flex flex-col transition-all duration-300 hover:bg-slate-200 justify-between p-6 bg-slate-100 space-y-14 rounded-lg group`;
 
   //Add id
 
@@ -204,7 +200,7 @@ function template(item) {
             </div>
           </div>
             
-              <div class="max-w-[17rem] max-h-[17rem] hover:scale-110 transition-all duration-300">
+              <div class="max-w-[17rem] max-h-[17rem] hover:scale-75 transition-all duration-300 my-8 -py-8 scale-50 ">
                 <img
                   id="img" 
                   src="${
@@ -217,7 +213,7 @@ function template(item) {
               </div>
             
           
-          <div class='body'>
+          <div class='body z-20'>
            ${item.body}
           </div>
           
