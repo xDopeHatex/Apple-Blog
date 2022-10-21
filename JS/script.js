@@ -257,6 +257,11 @@ async function likePost(e) {
 
 async function editPostToServer(e) {
   e.preventDefault();
+
+  const formData = new FormData(editForm);
+
+  console.log([...formData]);
+
   const parentDiv = e.target.closest("#edit-form");
 
   console.log(parentDiv);

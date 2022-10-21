@@ -217,18 +217,31 @@
           </div>
           <div>
             <textarea
+              name="title"
               placeholder="Here goes title of your post..."
               class="edit-title-content bg-slate-100 rounded-lg py-4 px-3 w-full"
             ></textarea>
           </div>
           <div>
             <textarea
+              name="body"
               placeholder="Here goes your post..."
               class="edit-post-content bg-slate-100 rounded-lg py-4 px-3 w-full min-h-[10rem]"
             ></textarea>
           </div>
           <div class="flex justify-between items-center">
-            <div></div>
+            <label
+              for="inputImg"
+              class="cursor-pointer bg-blue-400 px-[3rem] py-[0.7rem] text-white rounded-2xl hover:bg-blue-300 active:bg-blue-700 hover:shadow-lg hover:shadow-slate-700 transition-all duration-200 active:translate-y-0.5 flex"
+              >Add Image
+              <input
+                id="inputImg"
+                name="image"
+                type="file"
+                class="hidden"
+                accept="image/png"
+              />
+            </label>
             <button
               type="submit"
               class="edit-upload-post bg-blue-400 px-[4.5rem] py-3 text-white rounded-2xl hover:bg-blue-300 active:bg-blue-700 hover:shadow-lg hover:shadow-slate-500 transition-all duration-200 active:translate-y-0.5"
