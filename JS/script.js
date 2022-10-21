@@ -143,6 +143,10 @@ async function addPostToServer(e) {
       alert("It seems that you forgot to add a title, bro");
     } else {
       e.preventDefault();
+
+      const formData = new FormData(addForm);
+
+      console.log([...formData]);
       await axios.post(
         "https://pocketbase.sksoldev.com/api/collections/blog/records",
         {
@@ -185,7 +189,9 @@ function template(item) {
   li.innerHTML = `<div class="flex justify-between items-center ">
             <h2 class="title text-2xl">${item.title}</h2>
             <div class="flex items-center  space-x-3" >
-              <button data-id="${item.id}" data-title="${item.title}" data-body="${item.body}" data-likes="${item.likes}"      
+              <button data-id="${item.id}" data-title="${
+    item.title
+  }" data-body="${item.body}" data-likes="${item.likes}"      
                 class="edit-button px-7 py-2 bg-blue-400 rounded-2xl text-white hover:bg-blue-300 active:bg-blue-700 hover:shadow-lg hover:shadow-slate-500 transition-all duration-200 active:translate-y-0.5 scale-0 group-hover:scale-100 "
               >
                 Edit
@@ -197,9 +203,20 @@ function template(item) {
               </button>
             </div>
           </div>
-          <div class="max-w-[17rem] max-h-[17rem] hover:scale-110 transition-all duration-300">
-              <img id="img" src="https://pocketbase.sksoldev.com/api/files/blog/${item.id}/${item.image}" alt="" />
-            </div>
+            
+              <div class="max-w-[17rem] max-h-[17rem] hover:scale-110 transition-all duration-300">
+                <img
+                  id="img" 
+                  src="${
+                    item.image
+                      ? `https://pocketbase.sksoldev.com/api/files/blog/${item.id}/${item.image}`
+                      : ""
+                  }"
+                  alt=""
+                />
+              </div>
+            
+          
           <div class='body'>
            ${item.body}
           </div>
