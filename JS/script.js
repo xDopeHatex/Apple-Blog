@@ -146,7 +146,7 @@ async function addPostToServer(e) {
 
       const formData = new FormData(addForm);
 
-      console.log([...formData]);
+      console.log(formData);
       await axios.post(
         "https://pocketbase.sksoldev.com/api/collections/blog/records",
         formData
@@ -202,7 +202,7 @@ function template(item) {
             
               <div class="max-w-[17rem] max-h-[17rem] hover:scale-75 transition-all duration-300 my-8 -py-8 scale-50 ">
                 <img
-                  id="img" 
+                  class="myImg" 
                   src="${
                     item.image
                       ? `https://pocketbase.sksoldev.com/api/files/blog/${item.id}/${item.image}`
@@ -256,59 +256,108 @@ async function likePost(e) {
 }
 
 async function editPostToServer(e) {
-  e.preventDefault();
-
-  const formData = new FormData(editForm);
-
-  console.log([...formData]);
-
-  const parentDiv = e.target.closest("#edit-form");
-
-  console.log(parentDiv);
-
-  const beforeServerTitle = parentDiv.querySelector(
-    ".edit-title-content"
-  ).value;
-  const beforeServerBody = parentDiv.querySelector(".edit-post-content").value;
-  const id = `${editForm.dataset.id}`;
-
-  let rawPostResult = "";
-
   try {
-    rawPostResult = await axios.patch(
+    e.preventDefault();
+
+    const id = `${editForm.dataset.id}`;
+    postList = document.querySelector(".post-list");
+
+    const currentPost = postList.querySelector(`#${id}`);
+
+    const myImg = document.querySelector("#inputImgEdd");
+
+    const formData = new FormData(editForm);
+
+    let fileObject = {};
+
+    [, , [, fileObject]] = [...formData];
+
+    console.log(fileObject.name);
+
+    const [...arrFormData] = formData;
+    console.log(arrFormData);
+
+    const array = [...formData];
+
+    const [, [, body]] = array;
+    const [[, title1]] = array;
+    const [, , [, img1]] = array;
+
+    console.log(title1);
+    console.log(body);
+    console.log(img1);
+
+    const formDataObject = arrFormData[0];
+    console.log(formDataObject);
+
+    // if (fileObject.name === "") {
+    //   arrFormData.pop();
+    // }
+
+    const [, , [, file]] = [...formData];
+
+    console.log(file);
+
+    console.log([...formData]);
+
+    console.log(...formData);
+
+    // const { File } = image;
+
+    // console.log(File);
+
+    console.log(arrFormData);
+
+    // let rawPostResult = "";
+
+    const finalObject = {
+      title: `${title1}`,
+      body: `${body}`,
+    };
+
+    const whyThisDoesNotWork = {
+      title: `${title1}`,
+      body: `${body}`,
+      image: img1,
+    };
+
+    const rawPostResult = await axios.patch(
       `https://pocketbase.sksoldev.com/api/collections/blog/records/${id}`,
-      {
-        body: beforeServerBody,
-        title: beforeServerTitle,
-      }
+      fileObject.name === "" ? finalObject : formData
     );
+
+    const postResult = await rawPostResult.data;
+    console.log(postResult);
+
+    const afterServerTitle = postResult.title;
+    const afterServerBody = postResult.body;
+    const afterServerImg = postResult.image;
+
+    console.log(afterServerImg);
+
+    console.log(afterServerBody);
+
+    const finalImg = `https://pocketbase.sksoldev.com/api/files/blog/${id}/${afterServerImg}`;
+
+    console.log(finalImg);
+
+    currentPost.querySelector(".title").textContent = afterServerTitle;
+    currentPost.querySelector(".body").textContent = afterServerBody;
+    currentPost.querySelector(".myImg").src = finalImg;
+    // currentPost.querySelector(".img").src = finalImg;
+
+    // postList.innerHTML = "";
+    // await uploadPosts();
+    closeEditModal();
+    // document.getElementById(`${id}`).scrollIntoView({
+    //   behavior: "auto",
+    //   block: "center",
+    //   inline: "center",
+    //   behavior: "smooth",
+    // });
   } catch (error) {
     alert(error);
   }
-
-  const postResult = await rawPostResult.data;
-  const afterServerTitle = postResult.title;
-  const afterServerBody = postResult.body;
-
-  console.log(afterServerBody);
-  console.log(afterServerTitle);
-  postList = document.querySelector(".post-list");
-  const currentPost = postList.querySelector(`#${id}`);
-
-  currentPost.querySelector(".title").textContent = afterServerTitle;
-  currentPost.querySelector(".body").textContent = afterServerBody;
-
-  console.log(currentPost);
-
-  // postList.innerHTML = "";
-  // await uploadPosts();
-  closeEditModal();
-  // document.getElementById(`${id}`).scrollIntoView({
-  //   behavior: "auto",
-  //   block: "center",
-  //   inline: "center",
-  //   behavior: "smooth",
-  // });
 }
 
 deletePostBtn.addEventListener("click", deletePost);
@@ -369,9 +418,19 @@ async function downloadPageNumber(e) {
         console.log(el.dataset.likes);
         editForm.dataset.id = `${el.dataset.id}`;
 
+        const postList = document.querySelector(".post-list");
+
+        const currentPost = postList.querySelector(`#${id}`);
+
+        //   editTitleContent.value =
+        //   currentPost.querySelector(".title").textContent;
+        // console.log(editTitleContent.value);
+        // editPostContent.value = currentPost.querySelector(".body").textContent;
+
+        console.log(editTitleContent.value);
         editTitleContent.value = el.dataset.title;
         editPostContent.value = el.dataset.body;
-
+        console.log(editTitleContent.value);
         editModalWindow.classList.toggle("active");
         overlay.classList.toggle("hidden");
       })
@@ -456,13 +515,25 @@ async function uploadPosts() {
     editPost.forEach((el) =>
       el.addEventListener("click", () => {
         console.log(el.dataset.id);
-        console.log(el.dataset.title);
-        console.log(el.dataset.body);
-        console.log(el.dataset.likes);
-        editForm.dataset.id = `${el.dataset.id}`;
+        // console.log(el.dataset.title);
+        // console.log(el.dataset.body);
+        // console.log(el.dataset.likes);
 
-        editTitleContent.value = el.dataset.title;
-        editPostContent.value = el.dataset.body;
+        const postList = document.querySelector(".post-list");
+
+        const currentPost = postList.querySelector(`#${el.dataset.id}`);
+
+        editTitleContent.textContent =
+          currentPost.querySelector(".title").textContent;
+        console.log(editTitleContent.value);
+        editPostContent.textContent =
+          currentPost.querySelector(".body").textContent;
+
+        editForm.dataset.id = `${el.dataset.id}`;
+        // console.log(editPostContent.value);
+        // editTitleContent.value = el.dataset.title;
+        // editPostContent.value = el.dataset.body;
+        // console.log(editPostContent.value);
 
         editModalWindow.classList.toggle("active");
         overlay.classList.toggle("hidden");
