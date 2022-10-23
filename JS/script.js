@@ -176,7 +176,7 @@ function template(item) {
 
   const li = document.createElement("li");
   // Add class
-  li.className = `post flex flex-col transition-all duration-300 hover:bg-slate-200 justify-between p-6 bg-slate-100 space-y-14 rounded-lg group`;
+  li.className = `post flex flex-col transition-all duration-300 hover:bg-slate-200 justify-between p-6 bg-slate-100 space-y-14 rounded-lg group overflow-auto  `;
 
   //Add id
 
