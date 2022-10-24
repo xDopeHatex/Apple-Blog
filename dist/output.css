@@ -694,6 +694,10 @@ video {
   max-width: 50%;
 }
 
+.max-w-\[33\%\] {
+  max-width: 33%;
+}
+
 .scale-0 {
   --tw-scale-x: 0;
   --tw-scale-y: 0;
@@ -887,6 +891,11 @@ video {
 .px-4 {
   padding-left: 1rem;
   padding-right: 1rem;
+}
+
+.px-2 {
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
 }
 
 .pt-\[20rem\] {

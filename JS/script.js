@@ -571,29 +571,48 @@ async function kennyQuotes() {
   }
 }
 
-// check characters
+// check add title characters
 
-const titleCharacters = document.querySelector(".add-title-characters");
-console.log(titleCharacters);
+addTitleContent.addEventListener("keyup", addTitleCharacterCheck);
 
-addTitleContent.addEventListener("keyup", titleCharacterCheck);
+function addTitleCharacterCheck() {
+  const charactersInput = addTitleContent.value.length;
+  const charactersCheck = document.querySelector(".add-title-characters");
 
-function titleCharacterCheck() {
-  const addTitleCharactersInput = addTitleContent.value.length;
-
-  console.log(addTitleCharactersInput);
-
-  if (addTitleCharactersInput >= 1) {
-    titleCharacters.classList.remove("hidden");
-  } else if (addTitleCharactersInput === 0) {
-    titleCharacters.classList.add("hidden");
+  if (charactersInput >= 1) {
+    charactersCheck.classList.remove("hidden");
+  } else if (charactersInput === 0) {
+    charactersCheck.classList.add("hidden");
   }
 
-  if (addTitleCharactersInput === 150) {
-    titleCharacters.classList.add("red-alert");
+  if (charactersInput === 150) {
+    charactersCheck.classList.add("red-alert");
   } else {
-    titleCharacters.classList.remove("red-alert");
+    charactersCheck.classList.remove("red-alert");
   }
 
-  titleCharacters.textContent = `${addTitleCharactersInput} characters (max 150)`;
+  charactersCheck.textContent = `${charactersInput} characters (max 150)`;
+}
+
+// check add post characters
+
+addPostContent.addEventListener("keyup", addPostCharacterCheck);
+
+function addPostCharacterCheck() {
+  const charactersInput = addPostContent.value.length;
+  const charactersCheck = document.querySelector(".add-post-characters");
+
+  if (charactersInput >= 1) {
+    charactersCheck.classList.remove("hidden");
+  } else if (charactersInput === 0) {
+    charactersCheck.classList.add("hidden");
+  }
+
+  if (charactersInput === 250) {
+    charactersCheck.classList.add("red-alert");
+  } else {
+    charactersCheck.classList.remove("red-alert");
+  }
+
+  charactersCheck.textContent = `${charactersInput} characters (max 250)`;
 }
