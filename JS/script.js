@@ -616,3 +616,48 @@ function addPostCharacterCheck() {
 
   charactersCheck.textContent = `${charactersInput} characters (max 250)`;
 }
+// check add title characters
+
+editTitleContent.addEventListener("keyup", editTitleCharacterCheck);
+
+function editTitleCharacterCheck() {
+  const charactersInput = editTitleContent.value.length;
+  const charactersCheck = document.querySelector(".edit-title-characters");
+
+  if (charactersInput >= 1) {
+    charactersCheck.classList.remove("hidden");
+  } else if (charactersInput === 0) {
+    charactersCheck.classList.add("hidden");
+  }
+
+  if (charactersInput === 150) {
+    charactersCheck.classList.add("red-alert");
+  } else {
+    charactersCheck.classList.remove("red-alert");
+  }
+
+  charactersCheck.textContent = `${charactersInput} characters (max 150)`;
+}
+
+// check add post characters
+
+editPostContent.addEventListener("keyup", editPostCharacterCheck);
+
+function editPostCharacterCheck() {
+  const charactersInput = editPostContent.value.length;
+  const charactersCheck = document.querySelector(".edit-post-characters");
+
+  if (charactersInput >= 1) {
+    charactersCheck.classList.remove("hidden");
+  } else if (charactersInput === 0) {
+    charactersCheck.classList.add("hidden");
+  }
+
+  if (charactersInput === 250) {
+    charactersCheck.classList.add("red-alert");
+  } else {
+    charactersCheck.classList.remove("red-alert");
+  }
+
+  charactersCheck.textContent = `${charactersInput} characters (max 250)`;
+}
