@@ -4,6 +4,9 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link href="../dist/output.css" rel="stylesheet" />
+    <!-- <script type="text/javascript">
+      
+    </script> -->
   </head>
   <body class="relative mb-7">
     <!-- Loader -->
@@ -165,17 +168,28 @@
           </div>
           <div>
             <textarea
+              maxlength="150"
               name="title"
               placeholder="Here goes title of your post..."
               class="add-title-content bg-slate-100 rounded-lg py-4 px-3 w-full"
             ></textarea>
+            <div
+              class="add-title-characters border-2 border-orange-500 py-3 rounded-lg bg-white max-h-5 max-w-[13rem] flex justify-center items-center hidden"
+            ></div>
           </div>
+
           <div>
             <textarea
+              maxlength="250"
               name="body"
               placeholder="Here goes your post..."
               class="add-post-content bg-slate-100 rounded-lg py-4 px-3 w-full min-h-[10rem]"
             ></textarea>
+            <div
+              class="post-characters border-2 border-orange-500 py-3 rounded-lg bg-white max-h-5 max-w-[13rem] flex justify-center items-center"
+            >
+              15 characters (max 250)
+            </div>
           </div>
 
           <div class="flex justify-between items-center">
@@ -323,9 +337,9 @@
           <li
             class="post flex-col justify-between p-6 bg-slate-100 space-y-14 rounded-lg transition-all duration-300 hover:bg-slate-200 group overflow-auto hidden"
           >
-            <div class="flex justify-between items-center">
-              <h2 class="title text-2xl">
-                ${item.title}yytytytytytytytytytytytytytytytytytyty
+            <div class="flex justify-between items-center space-x-4">
+              <h2 class="title text-2xl overflow-auto">
+                ${item.title}yytytytytytytytytytytytytytytytytytytyfvnjvfdsjkfdvjkdfsbnvjkbsdfvjbsdfkjvhbsdkvjbdsfjhjbdfvkjshdbvjhsdbj
               </h2>
               <div class="flex items-center space-x-3">
                 <button
@@ -344,17 +358,17 @@
                 </button>
               </div>
             </div>
-            <div
-              class="max-w-[17rem] max-h-[17rem] hover:scale-75 transition-all duration-300 my-8 -py-8 scale-50"
-            >
-              <img
-                class=""
-                id="img"
-                src="https://pocketbase.sksoldev.com/api/files/blog/esdgzvc2thvmoz6/3a49c13b207c20bdf1fac243a9a8bc6b_uTBbCxUQJP.png"
-                alt="Here's gotta be an img"
-              />
+            <div class="flex space-x-3">
+              <div class="transition-all duration-300 max-w-[50%]">
+                <img
+                  class=""
+                  id="img"
+                  src="https://pocketbase.sksoldev.com/api/files/blog/l7e…glnq75/photo_5382316337059186215_y_oONZI7svbG.jpg"
+                  alt="Here's gotta be an img"
+                />
+              </div>
+              <div class="body overflow-auto">${item.body}</div>
             </div>
-            <div class="body">${item.body}</div>
 
             <div class="flex justify-between items-center div-likes">
               <button class="relative like-button">
@@ -382,8 +396,9 @@
         </div>
       </section>
     </div>
+
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-    <script type="module" src="../JS/script.js"></script>
+    <script type="module" src="../JS/script.js" defer></script>
     <script type="module" src="../JS/script2.js"></script>
   </body>
 </html>

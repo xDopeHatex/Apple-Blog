@@ -622,11 +622,6 @@ video {
   margin-right: 6rem;
 }
 
-.my-8 {
-  margin-top: 2rem;
-  margin-bottom: 2rem;
-}
-
 .mb-7 {
   margin-bottom: 1.75rem;
 }
@@ -659,8 +654,8 @@ video {
   height: 1.5rem;
 }
 
-.max-h-\[17rem\] {
-  max-height: 17rem;
+.max-h-5 {
+  max-height: 1.25rem;
 }
 
 .min-h-\[10rem\] {
@@ -691,27 +686,17 @@ video {
   max-width: 56rem;
 }
 
-.max-w-\[17rem\] {
-  max-width: 17rem;
+.max-w-\[13rem\] {
+  max-width: 13rem;
 }
 
-.max-w-screen-lg {
-  max-width: 1024px;
-}
-
-.max-w-screen-2xl {
-  max-width: 1536px;
+.max-w-\[50\%\] {
+  max-width: 50%;
 }
 
 .scale-0 {
   --tw-scale-x: 0;
   --tw-scale-y: 0;
-  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
-}
-
-.scale-50 {
-  --tw-scale-x: .5;
-  --tw-scale-y: .5;
   transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
 }
 
@@ -775,14 +760,6 @@ video {
   overflow: auto;
 }
 
-.overflow-hidden {
-  overflow: hidden;
-}
-
-.overflow-x-hidden {
-  overflow-x: hidden;
-}
-
 .rounded-lg {
   border-radius: 0.5rem;
 }
@@ -793,6 +770,15 @@ video {
 
 .rounded-full {
   border-radius: 9999px;
+}
+
+.border-2 {
+  border-width: 2px;
+}
+
+.border-orange-500 {
+  --tw-border-opacity: 1;
+  border-color: rgb(249 115 22 / var(--tw-border-opacity));
 }
 
 .bg-slate-800 {
@@ -818,6 +804,11 @@ video {
 .bg-slate-200 {
   --tw-bg-opacity: 1;
   background-color: rgb(226 232 240 / var(--tw-bg-opacity));
+}
+
+.bg-white {
+  --tw-bg-opacity: 1;
+  background-color: rgb(255 255 255 / var(--tw-bg-opacity));
 }
 
 .bg-blue-400 {
@@ -1265,10 +1256,37 @@ p {
   }
 }
 
-.hover\:scale-75:hover {
-  --tw-scale-x: .75;
-  --tw-scale-y: .75;
-  transform: translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y));
+/* width */
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+
+::-webkit-scrollbar-track {
+  background: white;
+  border-radius: 10px;
+}
+
+/* Handle */
+
+::-webkit-scrollbar-thumb {
+  background: rgb(129 140 248);
+  border-radius: 10px;
+}
+
+/* Handle on hover */
+
+::-webkit-scrollbar-thumb:hover {
+  background: #3730a3;
+}
+
+.red-alert {
+  border-color: #ef4444;
+  color: #ef4444;
+  font-weight: bold;
+  border-width: 3px;
 }
 
 .hover\:scale-125:hover {

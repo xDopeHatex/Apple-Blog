@@ -238,3 +238,32 @@ p {
     font-size: 24px;
   }
 }
+
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: white;
+  border-radius: 10px;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: rgb(129 140 248);
+  border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #3730a3;
+}
+
+.red-alert {
+  border-color: #ef4444;
+  color: #ef4444;
+  font-weight: bold;
+  border-width: 3px;
+}

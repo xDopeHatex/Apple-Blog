@@ -183,7 +183,7 @@ function template(item) {
   li.setAttribute("id", `${item.id}`);
 
   li.innerHTML = `<div class="flex justify-between items-center ">
-            <h2 class="title text-2xl">${item.title}</h2>
+            <h2 class="title overflow-auto text-2xl">${item.title}</h2>
             <div class="flex items-center  space-x-3" >
               <button data-id="${item.id}" data-title="${
     item.title
@@ -199,10 +199,10 @@ function template(item) {
               </button>
             </div>
           </div>
-            
-              <div class="max-w-[17rem] max-h-[17rem] hover:scale-75 transition-all duration-300 my-8 -py-8 scale-50 ">
+          <div class="flex space-x-3">
+              <div class=" transition-all duration-300  max-w-[50%] ">
                 <img
-                  class="myImg" 
+                  class="myImg bg-cover bg-center" 
                   src="${
                     item.image
                       ? `https://pocketbase.sksoldev.com/api/files/blog/${item.id}/${item.image}`
@@ -213,8 +213,9 @@ function template(item) {
               </div>
             
           
-          <div class='body z-20'>
+          <div class='body overflow-auto z-20'>
            ${item.body}
+          </div>
           </div>
           
           <div class="flex justify-between items-center div-likes">
@@ -491,9 +492,6 @@ async function uploadPosts() {
       template(element);
     });
 
-    const img = postList.querySelector("#img");
-    console.log(img.src);
-
     document.querySelectorAll(".delete-button").forEach((el) =>
       el.addEventListener("click", () => {
         deleteModalWindow.classList.toggle("active");
@@ -571,4 +569,31 @@ async function kennyQuotes() {
   } catch (error) {
     console.log(error);
   }
+}
+
+// check characters
+
+const titleCharacters = document.querySelector(".add-title-characters");
+console.log(titleCharacters);
+
+addTitleContent.addEventListener("keyup", titleCharacterCheck);
+
+function titleCharacterCheck() {
+  const addTitleCharactersInput = addTitleContent.value.length;
+
+  console.log(addTitleCharactersInput);
+
+  if (addTitleCharactersInput >= 1) {
+    titleCharacters.classList.remove("hidden");
+  } else if (addTitleCharactersInput === 0) {
+    titleCharacters.classList.add("hidden");
+  }
+
+  if (addTitleCharactersInput === 150) {
+    titleCharacters.classList.add("red-alert");
+  } else {
+    titleCharacters.classList.remove("red-alert");
+  }
+
+  titleCharacters.textContent = `${addTitleCharactersInput} characters (max 150)`;
 }
