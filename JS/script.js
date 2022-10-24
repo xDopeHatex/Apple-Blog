@@ -200,7 +200,7 @@ function template(item) {
             </div>
           </div>
           <div class="flex space-x-3">
-              <div class=" transition-all duration-300  max-w-[50%] ">
+              <div class=" clickimg transition-all duration-300  max-w-[50%]  ">
                 <img
                   class="myImg bg-cover bg-center" 
                   src="${
@@ -501,6 +501,15 @@ async function uploadPosts() {
         console.log(`${el.dataset.title}`);
         deleteForm.dataset.id = `${el.dataset.id}`;
         span.textContent = `${el.dataset.title}`;
+      })
+    );
+
+    document.querySelectorAll(".clickimg").forEach((el) =>
+      el.addEventListener("click", (el) => {
+        const x = el.path[1];
+
+        x.classList.toggle("scale-150");
+        x.classList.toggle("max-w-[50%]");
       })
     );
 
